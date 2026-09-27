@@ -252,6 +252,7 @@ export default function FinanceScreen() {
                 setEditingSchedule(sub);
                 setIsScheduleModalVisible(true);
               }}
+              onTogglePause={(id, isPaused) => updateSubscription(id, { is_paused: isPaused ? 1 : 0 })}
             />
           </View>
           
