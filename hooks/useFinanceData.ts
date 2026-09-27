@@ -64,7 +64,7 @@ export function useFinanceData() {
   const processScheduledTransactions = useCallback(async () => {
     try {
       const now = Date.now();
-      const dueSchedules = await db.getAllAsync<Subscription>('SELECT * FROM subscriptions WHERE next_billing_date <= ?', [now]);
+      const dueSchedules = await db.getAllAsync<Subscription>('SELECT * FROM subscriptions WHERE next_billing_date <= ? AND (is_paused IS NULL OR is_paused = 0)', [now]);
       
       if (dueSchedules.length > 0) {
         await db.withExclusiveTransactionAsync(async (txn) => {
@@ -249,8 +249,8 @@ export function useFinanceData() {
       setSubscriptions(prev => [...prev, newSub].sort((a, b) => a.next_billing_date - b.next_billing_date));
       
       await db.runAsync(
-        'INSERT INTO subscriptions (id, name, amount, type, billing_cycle, next_billing_date, icon, color, wallet_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [id, sub.name, sub.amount, sub.type, sub.billing_cycle, sub.next_billing_date, sub.icon || 'calendar', sub.color || '#38BDF8', sub.wallet_id || 'w-1']
+        'INSERT INTO subscriptions (id, name, amount, type, billing_cycle, next_billing_date, icon, color, wallet_id, is_paused) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [id, sub.name, sub.amount, sub.type, sub.billing_cycle, sub.next_billing_date, sub.icon || 'calendar', sub.color || '#38BDF8', sub.wallet_id || 'w-1', sub.is_paused || 0]
       );
     } catch (e) {
       console.error('Failed to add subscription', e);
@@ -263,8 +263,8 @@ export function useFinanceData() {
       setSubscriptions(prev => prev.map(s => s.id === id ? { ...s, ...sub } : s).sort((a, b) => a.next_billing_date - b.next_billing_date));
       
       await db.runAsync(
-        'UPDATE subscriptions SET name = COALESCE(?, name), amount = COALESCE(?, amount), type = COALESCE(?, type), billing_cycle = COALESCE(?, billing_cycle), next_billing_date = COALESCE(?, next_billing_date), icon = COALESCE(?, icon), color = COALESCE(?, color), wallet_id = COALESCE(?, wallet_id) WHERE id = ?',
-        [sub.name ?? null, sub.amount ?? null, sub.type ?? null, sub.billing_cycle ?? null, sub.next_billing_date ?? null, sub.icon ?? null, sub.color ?? null, sub.wallet_id ?? null, id]
+        'UPDATE subscriptions SET name = COALESCE(?, name), amount = COALESCE(?, amount), type = COALESCE(?, type), billing_cycle = COALESCE(?, billing_cycle), next_billing_date = COALESCE(?, next_billing_date), icon = COALESCE(?, icon), color = COALESCE(?, color), wallet_id = COALESCE(?, wallet_id), is_paused = COALESCE(?, is_paused) WHERE id = ?',
+        [sub.name ?? null, sub.amount ?? null, sub.type ?? null, sub.billing_cycle ?? null, sub.next_billing_date ?? null, sub.icon ?? null, sub.color ?? null, sub.wallet_id ?? null, sub.is_paused ?? null, id]
       );
     } catch (e) {
       console.error('Failed to update subscription', e);

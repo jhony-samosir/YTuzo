@@ -1,7 +1,7 @@
 import * as SQLite from 'expo-sqlite';
 
 export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
-  const DATABASE_VERSION = 7; // Upgraded to v7 for wallet_id on subscriptions
+  const DATABASE_VERSION = 8; // Upgraded to v8 for is_paused on subscriptions
   let result = await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version');
   let currentDbVersion = result?.user_version ?? 0;
 
@@ -165,7 +165,8 @@ export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
         next_billing_date INTEGER NOT NULL,
         icon TEXT NOT NULL,
         color TEXT NOT NULL,
-        wallet_id TEXT DEFAULT 'w-1'
+        wallet_id TEXT DEFAULT 'w-1',
+        is_paused INTEGER DEFAULT 0
       );
     `);
 
@@ -201,6 +202,17 @@ export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
         `);
       } catch (e) {
         console.warn('Column wallet_id might already exist on subscriptions');
+      }
+    }
+
+    // Migration logic for v8 (Add is_paused to subscriptions)
+    if (currentDbVersion < 8 && currentDbVersion >= 1) {
+      try {
+        await db.execAsync(`
+          ALTER TABLE subscriptions ADD COLUMN is_paused INTEGER DEFAULT 0;
+        `);
+      } catch (e) {
+        console.warn('Column is_paused might already exist on subscriptions');
       }
     }
     

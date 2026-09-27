@@ -32,6 +32,7 @@ export interface Subscription {
   icon: string;
   color: string;
   wallet_id?: string;
+  is_paused?: number; // 0 for active, 1 for paused
 }
 
 export interface Transaction {
