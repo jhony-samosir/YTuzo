@@ -372,22 +372,27 @@ export const TransactionsTab: React.FC<TransactionsTabProps> = ({ globalTransact
                   </View>
 
                   <View style={localStyles.modalActions}>
-                    <TouchableOpacity 
-                      style={localStyles.actionEditBtn} 
-                      onPress={() => {
-                        setDetailModalVisible(false);
-                        onEditTransaction(selectedTx);
-                      }}
-                    >
-                      <Ionicons name="pencil" size={20} color="#000" />
-                      <Text style={localStyles.actionEditText}>Edit</Text>
-                    </TouchableOpacity>
+                    {selectedTx.subtitle !== 'Scheduled' && (
+                      <TouchableOpacity 
+                        style={localStyles.actionEditBtn} 
+                        onPress={() => {
+                          setDetailModalVisible(false);
+                          onEditTransaction(selectedTx);
+                        }}
+                      >
+                        <Ionicons name="pencil" size={20} color="#000" />
+                        <Text style={localStyles.actionEditText}>Edit</Text>
+                      </TouchableOpacity>
+                    )}
                     
                     <TouchableOpacity 
-                      style={localStyles.actionDeleteBtn} 
+                      style={[localStyles.actionDeleteBtn, selectedTx.subtitle === 'Scheduled' && { flex: 1, paddingVertical: 16, flexDirection: 'row' }]} 
                       onPress={() => handleDeleteClick(selectedTx.id)}
                     >
                       <Ionicons name="trash" size={20} color={Colors.brand.ruby} />
+                      {selectedTx.subtitle === 'Scheduled' && (
+                        <Text style={{ color: Colors.brand.ruby, fontWeight: '700', fontSize: 16, marginLeft: 8 }}>Delete</Text>
+                      )}
                     </TouchableOpacity>
                   </View>
                 </>
