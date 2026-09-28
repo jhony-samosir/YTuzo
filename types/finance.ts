@@ -20,6 +20,7 @@ export interface Budget {
   category_name: string;
   category_icon: string;
   category_color: string;
+  spent: number;
 }
 
 export interface Subscription {
@@ -32,7 +33,7 @@ export interface Subscription {
   icon: string;
   color: string;
   wallet_id?: string;
-  is_paused?: number; // 0 for active, 1 for paused
+  is_paused?: boolean;
 }
 
 export interface Transaction {
@@ -43,7 +44,12 @@ export interface Transaction {
   type: 'INCOME' | 'EXPENSE';
   icon: string;
   color: string;
-  created_at: string | number; // ISO string or timestamp
+  created_at: number;  // Unix timestamp in milliseconds
+  updated_at?: number; // Unix timestamp in milliseconds
+  sync_status?: number; // 0 = pending sync, 1 = synced
   wallet_id?: string;
   category_id?: string;
 }
+
+export type SQLiteParam = string | number | null | boolean;
+
