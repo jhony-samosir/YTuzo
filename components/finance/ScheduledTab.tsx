@@ -58,7 +58,8 @@ export const ScheduledTab: React.FC<ScheduledTabProps> = ({ subscriptions, onAdd
     const isDueSoon = !s.is_paused && diffDays >= 0 && diffDays <= 3;
 
     return (
-      <Animated.View key={s.id} entering={FadeInDown.delay(index * 50).springify()} layout={Layout.springify()} style={[styles.card, s.is_paused ? { opacity: 0.6 } : null]}>
+      <Animated.View key={s.id} entering={FadeInDown.delay(index * 50).springify()} layout={Layout.springify()} style={styles.cardWrapper}>
+        <View style={[styles.card, s.is_paused ? { opacity: 0.6 } : null]}>
         <View style={styles.cardTop}>
           <View style={[styles.iconBg, { backgroundColor: safeAlpha(s.color, 0.15) }]}>
             <Ionicons name={s.icon as any || 'cash'} size={24} color={s.color || '#FFF'} />
@@ -100,6 +101,7 @@ export const ScheduledTab: React.FC<ScheduledTabProps> = ({ subscriptions, onAdd
               <Ionicons name="ellipsis-horizontal" size={18} color="#FFF" />
             </TouchableOpacity>
           </View>
+        </View>
         </View>
       </Animated.View>
     );
@@ -181,11 +183,13 @@ const styles = StyleSheet.create({
   groupSection: { marginBottom: 16 },
   groupTitle: { color: Colors.text.secondary, fontSize: 14, fontWeight: '700', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 16, marginTop: 8 },
 
+  cardWrapper: {
+    marginBottom: 12,
+  },
   card: {
     backgroundColor: 'rgba(255,255,255,0.03)',
     borderRadius: 24,
     padding: 20,
-    marginBottom: 12,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.05)',
   },
