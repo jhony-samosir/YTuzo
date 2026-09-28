@@ -8,7 +8,7 @@ import Animated, { FadeOut, FadeIn, FadeInDown, Easing, useSharedValue, useAnima
 import { View, StyleSheet, StatusBar } from 'react-native';
 import { SQLiteProvider } from 'expo-sqlite';
 import { migrateDbIfNeeded } from '../database/db';
-
+import { processScheduledTransactions } from '../utils/scheduler';
 export { ErrorBoundary } from 'expo-router';
 
 export const unstable_settings = {
@@ -44,6 +44,7 @@ export default function RootLayout() {
   const onDbInit = useCallback(async (db: any) => {
     try {
       await migrateDbIfNeeded(db);
+      await processScheduledTransactions(db);
       setDbReady(true);
     } catch (e) {
       console.error('DB Migration failed:', e);
