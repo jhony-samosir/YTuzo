@@ -1,6 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSQLiteContext } from 'expo-sqlite';
-import { Wallet, Budget, Subscription, Transaction, Category } from '../types/finance';
+import * as Crypto from 'expo-crypto';
+import { Wallet, Budget, Subscription, Transaction, Category, SQLiteParam } from '../types/finance';
+import { DEFAULT_WALLET_ID, DEFAULT_CATEGORY_ID } from '../constants/defaults';
+
+interface LoadingState {
+  wallets: boolean;
+  transactions: boolean;
+  static: boolean;
+}
 
 export function useFinanceData() {
   const db = useSQLiteContext();
@@ -9,23 +17,48 @@ export function useFinanceData() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  
+  const [loadingState, setLoadingState] = useState<LoadingState>({
+    wallets: true,
+    transactions: true,
+    static: true,
+  });
+  
   const [error, setError] = useState<Error | null>(null);
 
+  const updateLoading = useCallback((key: keyof LoadingState, value: boolean) => {
+    setLoadingState(prev => ({ ...prev, [key]: value }));
+  }, []);
+
   const loadWallets = useCallback(async () => {
-    const wData = await db.getAllAsync<Wallet>('SELECT * FROM wallets');
-    setWallets(wData);
+    try {
+      updateLoading('wallets', true);
+      const wData = await db.getAllAsync<Wallet>('SELECT * FROM wallets');
+      setWallets(wData);
+    } catch (e) {
+      console.error('Failed to load wallets', e);
+      setError(e instanceof Error ? e : new Error(String(e)));
+    } finally {
+      updateLoading('wallets', false);
+    }
   }, [db]);
 
   const loadTransactions = useCallback(async () => {
-    // Limits fetch to 50 to prevent N+1 overfetching issues
-    const tData = await db.getAllAsync<Transaction>('SELECT * FROM finance_logs ORDER BY created_at DESC LIMIT 50');
-    setTransactions(tData);
+    try {
+      updateLoading('transactions', true);
+      const tData = await db.getAllAsync<Transaction>('SELECT * FROM finance_logs ORDER BY created_at DESC LIMIT 50');
+      setTransactions(tData);
+    } catch (e) {
+      console.error('Failed to load transactions', e);
+      setError(e instanceof Error ? e : new Error(String(e)));
+    } finally {
+      updateLoading('transactions', false);
+    }
   }, [db]);
 
   const fetchFilteredTransactions = useCallback(async (filters: { type?: string, startDate?: number, endDate?: number, month?: number, year?: number }) => {
     let query = 'SELECT * FROM finance_logs WHERE 1=1';
-    const params: any[] = [];
+    const params: SQLiteParam[] = [];
     
     if (filters.type && filters.type !== 'ALL') {
       query += ' AND type = ?';
@@ -47,81 +80,51 @@ export function useFinanceData() {
   }, [db]);
 
   const loadStaticData = useCallback(async () => {
-    const bData = await db.getAllAsync<Budget>(`
-      SELECT b.*, c.name as category_name, c.icon as category_icon, c.color as category_color 
-      FROM budgets b
-      JOIN categories c ON b.category_id = c.id
-    `);
-    setBudgets(bData);
-
-    const cData = await db.getAllAsync<Category>('SELECT * FROM categories');
-    setCategories(cData);
-
-    const sData = await db.getAllAsync<Subscription>('SELECT * FROM subscriptions ORDER BY next_billing_date ASC');
-    setSubscriptions(sData);
-  }, [db]);
-
-  const processScheduledTransactions = useCallback(async () => {
     try {
-      const now = Date.now();
-      const dueSchedules = await db.getAllAsync<Subscription>('SELECT * FROM subscriptions WHERE next_billing_date <= ? AND (is_paused IS NULL OR is_paused = 0)', [now]);
-      
-      if (dueSchedules.length > 0) {
-        await db.withExclusiveTransactionAsync(async (txn) => {
-          for (const schedule of dueSchedules) {
-            const id = 'fin-' + Date.now() + Math.floor(Math.random() * 1000);
-            
-            // Log to ledger
-            await txn.runAsync(
-              'INSERT INTO finance_logs (id, title, subtitle, amount, type, icon, color, created_at, updated_at, sync_status, wallet_id, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)',
-              [id, schedule.name, 'Scheduled', schedule.amount, schedule.type, schedule.icon, schedule.color, schedule.next_billing_date, now, schedule.wallet_id || 'w-1', 'cat-1']
-            );
-            
-            // Adjust wallet
-            const balanceModifier = schedule.type === 'INCOME' ? schedule.amount : -schedule.amount;
-            await txn.runAsync('UPDATE wallets SET balance = balance + ? WHERE id = ?', [balanceModifier, schedule.wallet_id || 'w-1']);
-            
-            // Bump next_billing_date
-            const nextDate = new Date(schedule.next_billing_date);
-            if (schedule.billing_cycle === 'DAILY') nextDate.setDate(nextDate.getDate() + 1);
-            else if (schedule.billing_cycle === 'WEEKLY') nextDate.setDate(nextDate.getDate() + 7);
-            else if (schedule.billing_cycle === 'MONTHLY') nextDate.setMonth(nextDate.getMonth() + 1);
-            else if (schedule.billing_cycle === 'YEARLY') nextDate.setFullYear(nextDate.getFullYear() + 1);
-            
-            await txn.runAsync('UPDATE subscriptions SET next_billing_date = ? WHERE id = ?', [nextDate.getTime(), schedule.id]);
-          }
-        });
-        return true; // Indicates we processed something
-      }
-      return false;
+      updateLoading('static', true);
+      const bData = await db.getAllAsync<Budget>(`
+        SELECT 
+          b.*,
+          c.name as category_name,
+          c.icon as category_icon,
+          c.color as category_color,
+          COALESCE((
+            SELECT SUM(CASE WHEN type = 'EXPENSE' THEN amount ELSE 0 END) 
+            FROM finance_logs 
+            WHERE category_id = b.category_id 
+              AND created_at >= cast(strftime('%s', 'now', 'start of month') as integer) * 1000
+          ), 0) as spent
+        FROM budgets b
+        JOIN categories c ON b.category_id = c.id
+      `);
+      setBudgets(bData);
+
+      const cData = await db.getAllAsync<Category>('SELECT * FROM categories');
+      setCategories(cData);
+
+      const sData = await db.getAllAsync<Omit<Subscription, 'is_paused'> & { is_paused: number }>('SELECT * FROM subscriptions ORDER BY next_billing_date ASC');
+      setSubscriptions(sData.map(s => ({ ...s, is_paused: s.is_paused === 1 })));
     } catch (e) {
-      console.error('Failed to process scheduled transactions', e);
-      return false;
+      console.error('Failed to load static data', e);
+      setError(e instanceof Error ? e : new Error(String(e)));
+    } finally {
+      updateLoading('static', false);
     }
   }, [db]);
 
   const loadAllData = useCallback(async () => {
     try {
-      setIsLoading(true);
       setError(null);
-      
-      // Run the automation engine first
-      await processScheduledTransactions();
-      
       await Promise.all([loadWallets(), loadTransactions(), loadStaticData()]);
     } catch (e) {
       console.warn('Database not fully migrated yet.', e);
       setError(e instanceof Error ? e : new Error(String(e)));
-    } finally {
-      setIsLoading(false);
     }
   }, [loadWallets, loadTransactions, loadStaticData]);
 
   useEffect(() => {
     loadAllData();
   }, [loadAllData]);
-
-
 
   const deleteTransaction = useCallback(async (id: string) => {
     try {
@@ -136,32 +139,33 @@ export function useFinanceData() {
       // 2. Database Sync using Transactions
       await db.withExclusiveTransactionAsync(async (txn) => {
         await txn.runAsync('DELETE FROM finance_logs WHERE id = ?', [id]);
-        await txn.runAsync('UPDATE wallets SET balance = balance + ? WHERE id = ?', [balanceModifier, txToDelete.wallet_id || 'w-1']);
+        await txn.runAsync('UPDATE wallets SET balance = balance + ? WHERE id = ?', [balanceModifier, txToDelete.wallet_id || DEFAULT_WALLET_ID]);
       });
+      loadStaticData(); // Reload budgets
     } catch (e) {
       console.error('Failed to delete transaction', e);
       // Revert if failed
       loadWallets();
       loadTransactions();
     }
-  }, [db, transactions, loadWallets, loadTransactions]);
+  }, [db, transactions, loadWallets, loadTransactions, loadStaticData]);
 
-  const addTransaction = useCallback(async (tx: Omit<Transaction, 'id' | 'created_at'> & { created_at?: string | number }) => {
+  const addTransaction = useCallback(async (tx: Omit<Transaction, 'id' | 'created_at'> & { created_at?: number }) => {
     try {
-      const txTime = tx.created_at ? (typeof tx.created_at === 'string' ? new Date(tx.created_at).getTime() : tx.created_at) : Date.now();
-      const id = 'fin-' + Date.now() + Math.floor(Math.random() * 1000); // Generate unique ID
-      const walletId = tx.wallet_id || 'w-1';
+      const txTime = tx.created_at || Date.now();
+      const id = 'fin-' + Crypto.randomUUID();
+      const walletId = tx.wallet_id || DEFAULT_WALLET_ID;
       
       const newTx = {
         ...tx,
         id,
-        created_at: txTime as number,
+        created_at: txTime,
         updated_at: Date.now(),
         sync_status: 0,
         icon: tx.icon || 'cash',
         color: tx.color || '#10B981',
         wallet_id: walletId,
-        category_id: tx.category_id || 'cat-1'
+        category_id: tx.category_id || DEFAULT_CATEGORY_ID
       } as Transaction;
 
       // 1. Optimistic Update
@@ -173,17 +177,18 @@ export function useFinanceData() {
       await db.withExclusiveTransactionAsync(async (txn) => {
         await txn.runAsync(
           'INSERT INTO finance_logs (id, title, subtitle, amount, type, icon, color, created_at, updated_at, sync_status, wallet_id, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)',
-          [id, tx.title, tx.subtitle, tx.amount, tx.type, newTx.icon, newTx.color, txTime, Date.now(), walletId, newTx.category_id || 'cat-1']
+          [id, tx.title, tx.subtitle, tx.amount, tx.type, newTx.icon, newTx.color, txTime, Date.now(), walletId, newTx.category_id || DEFAULT_CATEGORY_ID]
         );
         await txn.runAsync('UPDATE wallets SET balance = balance + ? WHERE id = ?', [balanceModifier, walletId]);
       });
+      loadStaticData(); // Reload budgets
     } catch (e) {
       console.error('Failed to add transaction', e);
       // Revert if failed
       loadWallets();
       loadTransactions();
     }
-  }, [db, loadWallets, loadTransactions]);
+  }, [db, loadWallets, loadTransactions, loadStaticData]);
 
   const updateTransaction = useCallback(async (id: string, tx: Partial<Transaction>) => {
     try {
@@ -191,7 +196,7 @@ export function useFinanceData() {
       if (!oldTx) return;
 
       const now = Date.now();
-      const txTime = tx.created_at ? (typeof tx.created_at === 'string' ? new Date(tx.created_at).getTime() : tx.created_at) : oldTx.created_at;
+      const txTime = tx.created_at ?? oldTx.created_at;
       
       const newType = tx.type || oldTx.type;
       const newAmount = tx.amount ?? oldTx.amount;
@@ -214,22 +219,23 @@ export function useFinanceData() {
       // 2. Database Sync using Transactions
       await db.withExclusiveTransactionAsync(async (txn) => {
         // Adjust old wallet
-        await txn.runAsync('UPDATE wallets SET balance = balance + ? WHERE id = ?', [revertModifier, oldTx.wallet_id || 'w-1']);
+        await txn.runAsync('UPDATE wallets SET balance = balance + ? WHERE id = ?', [revertModifier, oldTx.wallet_id || DEFAULT_WALLET_ID]);
         // Adjust new wallet
-        await txn.runAsync('UPDATE wallets SET balance = balance + ? WHERE id = ?', [applyModifier, newWalletId || 'w-1']);
+        await txn.runAsync('UPDATE wallets SET balance = balance + ? WHERE id = ?', [applyModifier, newWalletId || DEFAULT_WALLET_ID]);
         
         await txn.runAsync(
           'UPDATE finance_logs SET title = COALESCE(?, title), subtitle = COALESCE(?, subtitle), amount = COALESCE(?, amount), type = COALESCE(?, type), wallet_id = COALESCE(?, wallet_id), category_id = COALESCE(?, category_id), created_at = COALESCE(?, created_at), updated_at = ? WHERE id = ?',
           [tx.title ?? null, tx.subtitle ?? null, tx.amount ?? null, tx.type ?? null, tx.wallet_id ?? null, tx.category_id ?? null, txTime, now, id]
         );
       });
+      loadStaticData(); // Reload budgets
     } catch (e) {
       console.error('Failed to update transaction', e);
       // Revert if failed
       loadWallets();
       loadTransactions();
     }
-  }, [db, transactions, loadWallets, loadTransactions]);
+  }, [db, transactions, loadWallets, loadTransactions, loadStaticData]);
 
   const deleteSubscription = useCallback(async (id: string) => {
     try {
@@ -243,14 +249,14 @@ export function useFinanceData() {
 
   const addSubscription = useCallback(async (sub: Omit<Subscription, 'id'>) => {
     try {
-      const id = 'sub-' + Date.now() + Math.floor(Math.random() * 1000);
+      const id = 'sub-' + Crypto.randomUUID();
       const newSub = { ...sub, id } as Subscription;
       
       setSubscriptions(prev => [...prev, newSub].sort((a, b) => a.next_billing_date - b.next_billing_date));
       
       await db.runAsync(
         'INSERT INTO subscriptions (id, name, amount, type, billing_cycle, next_billing_date, icon, color, wallet_id, is_paused) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [id, sub.name, sub.amount, sub.type, sub.billing_cycle, sub.next_billing_date, sub.icon || 'calendar', sub.color || '#38BDF8', sub.wallet_id || 'w-1', sub.is_paused || 0]
+        [id, sub.name, sub.amount, sub.type, sub.billing_cycle, sub.next_billing_date, sub.icon || 'calendar', sub.color || '#38BDF8', sub.wallet_id || DEFAULT_WALLET_ID, sub.is_paused ? 1 : 0]
       );
     } catch (e) {
       console.error('Failed to add subscription', e);
@@ -264,7 +270,7 @@ export function useFinanceData() {
       
       await db.runAsync(
         'UPDATE subscriptions SET name = COALESCE(?, name), amount = COALESCE(?, amount), type = COALESCE(?, type), billing_cycle = COALESCE(?, billing_cycle), next_billing_date = COALESCE(?, next_billing_date), icon = COALESCE(?, icon), color = COALESCE(?, color), wallet_id = COALESCE(?, wallet_id), is_paused = COALESCE(?, is_paused) WHERE id = ?',
-        [sub.name ?? null, sub.amount ?? null, sub.type ?? null, sub.billing_cycle ?? null, sub.next_billing_date ?? null, sub.icon ?? null, sub.color ?? null, sub.wallet_id ?? null, sub.is_paused ?? null, id]
+        [sub.name ?? null, sub.amount ?? null, sub.type ?? null, sub.billing_cycle ?? null, sub.next_billing_date ?? null, sub.icon ?? null, sub.color ?? null, sub.wallet_id ?? null, sub.is_paused !== undefined ? (sub.is_paused ? 1 : 0) : null, id]
       );
     } catch (e) {
       console.error('Failed to update subscription', e);
@@ -273,6 +279,7 @@ export function useFinanceData() {
   }, [db, loadStaticData]);
 
   const totalBalance = wallets.reduce((acc, w) => acc + w.balance, 0);
+  const isLoading = loadingState.wallets || loadingState.transactions || loadingState.static;
 
   return {
     wallets,
@@ -282,6 +289,7 @@ export function useFinanceData() {
     categories,
     totalBalance,
     isLoading,
+    loadingState,
     error,
     refreshData: loadAllData,
     fetchFilteredTransactions,
