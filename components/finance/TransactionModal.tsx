@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Modal, StyleSheet, KeyboardAvo
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../../constants/Colors';
 import { Transaction, Wallet, Category } from '../../types/finance';
-
+import { CalendarPicker } from '../ui/CalendarPicker';
 interface TransactionModalProps {
   visible: boolean;
   onClose: () => void;
@@ -22,7 +22,6 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({ visible, onC
   const [selectedDate, setSelectedDate] = useState<Date>(initialData ? new Date(initialData.created_at) : new Date());
   const [showCalendar, setShowCalendar] = useState(false);
   const [calendarMonth, setCalendarMonth] = useState(new Date(selectedDate));
-  const [calendarMode, setCalendarMode] = useState<'DATE' | 'MONTH'>('DATE');
   const [errorMsg, setErrorMsg] = useState('');
 
   const handleSave = () => {
@@ -56,87 +55,17 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({ visible, onC
   };
 
   const renderCalendar = () => {
-    const year = calendarMonth.getFullYear();
-    const month = calendarMonth.getMonth();
-    
-    if (calendarMode === 'MONTH') {
-      return (
-        <View style={styles.calContainer}>
-          <View style={styles.calHeaderRow}>
-            <TouchableOpacity onPress={() => setCalendarMonth(new Date(year - 1, month, 1))}>
-              <Ionicons name="chevron-back" size={20} color={Colors.text.primary} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setCalendarMode('DATE')}>
-              <Text style={styles.calMonthText}>{year}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setCalendarMonth(new Date(year + 1, month, 1))}>
-              <Ionicons name="chevron-forward" size={20} color={Colors.text.primary} />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.calGrid}>
-            {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((m, idx) => (
-              <TouchableOpacity 
-                key={m} 
-                style={[styles.calMonthBtn, month === idx && styles.calDaySelected]}
-                onPress={() => {
-                  setCalendarMonth(new Date(year, idx, 1));
-                  setCalendarMode('DATE');
-                }}
-              >
-                <Text style={[styles.calMonthBtnText, month === idx && styles.calDayTextSelected]}>{m}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-      );
-    }
-
-    const firstDay = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    
-    const days = [];
-    for (let i = 0; i < firstDay; i++) {
-      days.push(<View key={`empty-${i}`} style={styles.calDay} />);
-    }
-    for (let i = 1; i <= daysInMonth; i++) {
-      const thisDate = new Date(year, month, i);
-      const isSelected = selectedDate.getDate() === i && selectedDate.getMonth() === month && selectedDate.getFullYear() === year;
-      
-      days.push(
-        <TouchableOpacity 
-          key={`day-${i}`} 
-          style={[styles.calDay, isSelected && styles.calDaySelected]}
-          onPress={() => {
-            setSelectedDate(thisDate);
-            setShowCalendar(false);
-          }}
-        >
-          <Text style={[styles.calDayText, isSelected && styles.calDayTextSelected]}>{i}</Text>
-        </TouchableOpacity>
-      );
-    }
-    
     return (
-      <View style={styles.calContainer}>
-        <View style={styles.calHeaderRow}>
-          <TouchableOpacity onPress={() => setCalendarMonth(new Date(year, month - 1, 1))}>
-            <Ionicons name="chevron-back" size={20} color={Colors.text.primary} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setCalendarMode('MONTH')}>
-            <Text style={styles.calMonthText}>
-              {calendarMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setCalendarMonth(new Date(year, month + 1, 1))}>
-            <Ionicons name="chevron-forward" size={20} color={Colors.text.primary} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.calDaysHeader}>
-          {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, idx) => (
-            <Text key={`dw-${idx}`} style={styles.calHeaderText}>{d}</Text>
-          ))}
-        </View>
-        <View style={styles.calGrid}>{days}</View>
+      <View style={{ marginBottom: 24 }}>
+        <CalendarPicker 
+          startDate={selectedDate} 
+          currentMonth={calendarMonth} 
+          setCurrentMonth={setCalendarMonth} 
+          onDayPress={(date) => {
+            setSelectedDate(date);
+            setShowCalendar(false);
+          }} 
+        />
       </View>
     );
   };
