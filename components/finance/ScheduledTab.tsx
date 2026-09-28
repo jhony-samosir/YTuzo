@@ -152,11 +152,6 @@ export const ScheduledTab: React.FC<ScheduledTabProps> = ({ subscriptions, onAdd
           )}
         </>
       )}
-
-      <TouchableOpacity style={styles.addBtn} onPress={onAdd}>
-        <Ionicons name="add" size={20} color="#000" />
-        <Text style={styles.addBtnText}>Create New Schedule</Text>
-      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -207,8 +202,5 @@ const styles = StyleSheet.create({
   cardBottom: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   nextDate: { color: Colors.brand.yuzu, fontSize: 14, fontWeight: '600' },
   
-  actionBtn: { padding: 10, backgroundColor: 'rgba(255,255,255,0.08)', borderRadius: 12 },
-  
-  addBtn: { flexDirection: 'row', backgroundColor: Colors.brand.yuzu, paddingVertical: 16, borderRadius: 16, justifyContent: 'center', alignItems: 'center', marginTop: 16 },
-  addBtnText: { color: '#000', fontWeight: '700', fontSize: 16, marginLeft: 8 }
+  actionBtn: { padding: 10, backgroundColor: 'rgba(255,255,255,0.08)', borderRadius: 12 }
 });
