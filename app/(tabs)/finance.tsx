@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, ScrollView, useWindowDimensions, DeviceEventEmitter, Alert } from 'react-native';
+import { View, Text, ScrollView, useWindowDimensions, StyleSheet, ToastAndroid, Platform, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -56,26 +56,28 @@ export default function FinanceScreen() {
     setIsModalVisible(true);
   };
 
-  // Context-Aware FAB Listener
   useEffect(() => {
-      const subscriptionEvent = DeviceEventEmitter.addListener('financeGlobalFabPress', () => {
-      if (activeTab === 'TRANSACTIONS') {
-        handleFabPress(); // Opens New Transaction
-      } else if (activeTab === 'SCHEDULED') {
-        setEditingSchedule(null);
-        setIsScheduleModalVisible(true);
-      } else if (activeTab === 'BUDGETS') {
-        Alert.alert('New Budget', 'Form to add a new Budget will open here!');
-      } else if (activeTab === 'ACCOUNTS') {
-        Alert.alert('New Wallet', 'Form to add a new Wallet will open here!');
-      } else {
-        // Default action for Overview
-        handleFabPress();
-      }
-    });
-
-    return () => subscriptionEvent.remove();
-  }, [activeTab]);
+    if (params.action === 'fab') {
+      setTimeout(() => {
+        if (activeTab === 'TRANSACTIONS' || activeTab === 'OVERVIEW') {
+          handleFabPress();
+        } else if (activeTab === 'SCHEDULED') {
+          setEditingSchedule(null);
+          setIsScheduleModalVisible(true);
+        } else if (activeTab === 'BUDGETS' || activeTab === 'ACCOUNTS') {
+          // Features not yet implemented — inform the user instead of silent no-op
+          const label = activeTab === 'BUDGETS' ? 'Budget' : 'Wallet';
+          const msg = `Adding a new ${label} is coming soon!`;
+          if (Platform.OS === 'android') {
+            ToastAndroid.show(msg, ToastAndroid.SHORT);
+          } else {
+            Alert.alert('Coming Soon', msg);
+          }
+        }
+        router.setParams({ action: '' });
+      }, 0);
+    }
+  }, [params.action, activeTab]);
 
   const { 
     wallets, 
@@ -128,17 +130,12 @@ export default function FinanceScreen() {
   };
 
   const renderSubmenu = () => (
-    <View style={{ paddingHorizontal: 24, paddingBottom: 24 }}>
+    <View style={localStyles.submenuContainer}>
       <ScrollView 
         ref={submenuRef}
         horizontal 
         showsHorizontalScrollIndicator={false} 
-        contentContainerStyle={{
-          backgroundColor: 'rgba(255, 255, 255, 0.04)',
-          borderRadius: 24,
-          padding: 6,
-          flexDirection: 'row',
-        }}
+        contentContainerStyle={localStyles.submenuScrollContent}
       >
         {TABS.map((tab, index) => {
           const isActive = activeTab === tab;
@@ -149,24 +146,15 @@ export default function FinanceScreen() {
               key={tab} 
               scaleTo={0.92}
               onPress={() => handleTabPress(tab, index)} 
-              style={{
-                paddingHorizontal: 20,
-                paddingVertical: 10,
-                borderRadius: 18,
-                backgroundColor: isActive ? '#FFFFFF' : 'transparent',
-                shadowColor: isActive ? '#000' : 'transparent',
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: isActive ? 0.15 : 0,
-                shadowRadius: 8,
-                elevation: isActive ? 4 : 0,
-              }}
+              style={[
+                localStyles.tabItem,
+                isActive && localStyles.tabItemActive
+              ]}
             >
-              <Text style={{
-                fontSize: 14,
-                fontWeight: isActive ? '700' : '600',
-                color: isActive ? '#000000' : 'rgba(255, 255, 255, 0.5)',
-                letterSpacing: 0.3,
-              }}>
+              <Text style={[
+                localStyles.tabText,
+                isActive && localStyles.tabTextActive
+              ]}>
                 {tabName}
               </Text>
             </TouchableScale>
@@ -252,7 +240,7 @@ export default function FinanceScreen() {
                 setEditingSchedule(sub);
                 setIsScheduleModalVisible(true);
               }}
-              onTogglePause={(id, isPaused) => updateSubscription(id, { is_paused: isPaused ? 1 : 0 })}
+              onTogglePause={(id, isPaused) => updateSubscription(id, { is_paused: isPaused })}
             />
           </View>
           
@@ -298,3 +286,40 @@ export default function FinanceScreen() {
     </GestureHandlerRootView>
   );
 }
+
+const localStyles = StyleSheet.create({
+  submenuContainer: {
+    paddingHorizontal: 24,
+    paddingBottom: 24,
+  },
+  submenuScrollContent: {
+    backgroundColor: 'rgba(255, 255, 255, 0.04)',
+    borderRadius: 24,
+    padding: 6,
+    flexDirection: 'row',
+  },
+  tabItem: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 18,
+    backgroundColor: 'transparent',
+  },
+  tabItemActive: {
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  tabText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: 'rgba(255, 255, 255, 0.5)',
+    letterSpacing: 0.3,
+  },
+  tabTextActive: {
+    fontWeight: '700',
+    color: '#000000',
+  }
+});
