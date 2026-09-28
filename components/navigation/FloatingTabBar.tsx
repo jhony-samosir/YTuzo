@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Platform, Modal, TouchableOpacity, Text, DeviceEventEmitter } from 'react-native';
+import { View, StyleSheet, Platform, Modal, TouchableOpacity, Text } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { SymbolView } from 'expo-symbols';
 import { Ionicons } from '@expo/vector-icons';
@@ -70,7 +70,7 @@ export function FloatingTabBar({ state, descriptors, navigation }: any) {
                        const focusedRouteName = state.routes[state.index].name;
                        if (focusedRouteName === 'finance') {
                          // Let the Finance screen handle it contextually
-                         DeviceEventEmitter.emit('financeGlobalFabPress');
+                         router.setParams({ action: 'fab' });
                        } else {
                          // Homepage or other tabs -> Show Global Quick Actions
                          setActionMenuVisible(true);
