@@ -2,7 +2,7 @@ import * as SQLite from 'expo-sqlite';
 import { DEFAULT_WALLET_ID, DEFAULT_CATEGORY_ID } from '../constants/defaults';
 
 export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
-  const DATABASE_VERSION = 8;
+  const DATABASE_VERSION = 9;
   let result = await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version');
   let currentDbVersion = result?.user_version ?? 0;
 
@@ -105,7 +105,10 @@ export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
         billing_cycle TEXT NOT NULL,
         next_billing_date INTEGER NOT NULL,
         icon TEXT NOT NULL,
-        color TEXT NOT NULL
+        color TEXT NOT NULL,
+        wallet_id TEXT,
+        type TEXT,
+        is_paused INTEGER DEFAULT 0
       );
     `);
   }
@@ -144,8 +147,8 @@ export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
     }
   }
 
-  // Migration logic for v8 (Add is_paused to subscriptions)
-  if (currentDbVersion < 8) {
+  // Migration logic for v9 (Add is_paused to subscriptions)
+  if (currentDbVersion < 9) {
     try {
       await db.execAsync(`
         ALTER TABLE subscriptions ADD COLUMN is_paused INTEGER DEFAULT 0;
