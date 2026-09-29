@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, ScrollView, useWindowDimensions, StyleSheet, ToastAndroid, Platform, Alert } from 'react-native';
+import { View, Text, ScrollView, useWindowDimensions, StyleSheet, Modal, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -10,19 +10,21 @@ import { Colors } from '../../constants/Colors';
 import { TouchableScale } from '../../components/ui/TouchableScale';
 import { financeStyles as styles } from '../../components/finance/financeStyles';
 import { useFinanceData } from '../../hooks/useFinanceData';
-import { Transaction, Subscription } from '../../types/finance';
+import { Transaction, Subscription, Budget } from '../../types/finance';
 
 // Subcomponents
 import { OverviewTab } from '../../components/finance/OverviewTab';
 import { TransactionsTab } from '../../components/finance/TransactionsTab';
 import { BudgetsTab } from '../../components/finance/BudgetsTab';
-import { AccountsTab } from '../../components/finance/AccountsTab';
 import { TransactionModal } from '../../components/finance/TransactionModal';
 import { ScheduledTab } from '../../components/finance/ScheduledTab';
 import { ScheduleFormModal } from '../../components/finance/ScheduleFormModal';
+import { BudgetModal } from '../../components/finance/BudgetModal';
+import { ManageCategoriesModal } from '../../components/finance/ManageCategoriesModal';
+import { ManageWalletsModal } from '../../components/finance/ManageWalletsModal';
 
-type TabType = 'OVERVIEW' | 'TRANSACTIONS' | 'SCHEDULED' | 'BUDGETS' | 'ACCOUNTS';
-const TABS: TabType[] = ['OVERVIEW', 'TRANSACTIONS', 'SCHEDULED', 'BUDGETS', 'ACCOUNTS'];
+type TabType = 'OVERVIEW' | 'TRANSACTIONS' | 'SCHEDULED' | 'BUDGETS';
+const TABS: TabType[] = ['OVERVIEW', 'TRANSACTIONS', 'SCHEDULED', 'BUDGETS'];
 
 export default function FinanceScreen() {
   const insets = useSafeAreaInsets();
@@ -39,6 +41,13 @@ export default function FinanceScreen() {
   
   const [isScheduleModalVisible, setIsScheduleModalVisible] = useState(false);
   const [editingSchedule, setEditingSchedule] = useState<Subscription | null>(null);
+
+  const [isBudgetModalVisible, setIsBudgetModalVisible] = useState(false);
+  const [editingBudget, setEditingBudget] = useState<Budget | null>(null);
+
+  const [isManageCategoriesVisible, setIsManageCategoriesVisible] = useState(false);
+  const [isManageWalletsVisible, setIsManageWalletsVisible] = useState(false);
+  const [isSettingsMenuVisible, setIsSettingsMenuVisible] = useState(false);
 
   const params = useLocalSearchParams();
 
@@ -64,15 +73,9 @@ export default function FinanceScreen() {
         } else if (activeTab === 'SCHEDULED') {
           setEditingSchedule(null);
           setIsScheduleModalVisible(true);
-        } else if (activeTab === 'BUDGETS' || activeTab === 'ACCOUNTS') {
-          // Features not yet implemented — inform the user instead of silent no-op
-          const label = activeTab === 'BUDGETS' ? 'Budget' : 'Wallet';
-          const msg = `Adding a new ${label} is coming soon!`;
-          if (Platform.OS === 'android') {
-            ToastAndroid.show(msg, ToastAndroid.SHORT);
-          } else {
-            Alert.alert('Coming Soon', msg);
-          }
+        } else if (activeTab === 'BUDGETS') {
+          setEditingBudget(null);
+          setIsBudgetModalVisible(true);
         }
         router.setParams({ action: '' });
       }, 0);
@@ -92,7 +95,16 @@ export default function FinanceScreen() {
     fetchFilteredTransactions,
     deleteSubscription,
     addSubscription,
-    updateSubscription
+    updateSubscription,
+    addBudget,
+    updateBudget,
+    deleteBudget,
+    addCategory,
+    updateCategory,
+    deleteCategory,
+    addWallet,
+    updateWallet,
+    deleteWallet
   } = useFinanceData();
 
 
@@ -115,6 +127,14 @@ export default function FinanceScreen() {
       updateSubscription(editingSchedule.id, data);
     } else {
       addSubscription(data as Omit<Subscription, 'id'>);
+    }
+  };
+
+  const handleSaveBudget = (data: { category_id: string; monthly_limit: number }) => {
+    if (editingBudget) {
+      updateBudget(editingBudget.id, data);
+    } else {
+      addBudget(data);
     }
   };
 
@@ -178,12 +198,18 @@ export default function FinanceScreen() {
           <TouchableScale 
             style={[
               styles.headerActionBtn, 
-              showChart && { backgroundColor: Colors.brand.yuzu, borderColor: Colors.brand.yuzu }
+              (showChart || isSettingsMenuVisible) && { backgroundColor: Colors.brand.yuzu, borderColor: Colors.brand.yuzu }
             ]} 
-            onPress={() => setShowChart(!showChart)}
+            onPress={() => {
+              if (activeTab === 'OVERVIEW') {
+                setShowChart(!showChart);
+              } else {
+                setIsSettingsMenuVisible(true);
+              }
+            }}
             scaleTo={0.9}
           >
-            <Ionicons name="pie-chart" size={20} color={showChart ? '#000' : Colors.text.primary} />
+            <Ionicons name={activeTab === 'OVERVIEW' ? "pie-chart" : "ellipsis-vertical"} size={20} color={(showChart || isSettingsMenuVisible) ? '#000' : Colors.text.primary} />
           </TouchableScale>
         </View>
 
@@ -247,14 +273,17 @@ export default function FinanceScreen() {
           {/* BUDGETS */}
           <View style={{ width }}>
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 160 }}>
-              <BudgetsTab budgets={budgets} />
-            </ScrollView>
-          </View>
-          
-          {/* ACCOUNTS */}
-          <View style={{ width }}>
-            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 160 }}>
-              <AccountsTab wallets={wallets} />
+              <BudgetsTab 
+                budgets={budgets} 
+                onAdd={() => {
+                  setEditingBudget(null);
+                  setIsBudgetModalVisible(true);
+                }}
+                onEdit={(budget) => {
+                  setEditingBudget(budget);
+                  setIsBudgetModalVisible(true);
+                }}
+              />
             </ScrollView>
           </View>
         </ScrollView>
@@ -282,12 +311,96 @@ export default function FinanceScreen() {
             wallets={wallets}
           />
         )}
+
+        {/* Budget Modal */}
+        {isBudgetModalVisible && (
+          <BudgetModal 
+            visible={isBudgetModalVisible}
+            onClose={() => setIsBudgetModalVisible(false)}
+            onSave={handleSaveBudget}
+            onDelete={deleteBudget}
+            onAddCategory={addCategory}
+            onManageCategories={() => setIsManageCategoriesVisible(true)}
+            initialData={editingBudget}
+            categories={categories}
+          />
+        )}
+
+        {/* Settings Menu Modal */}
+        <Modal visible={isSettingsMenuVisible} transparent animationType="fade" onRequestClose={() => setIsSettingsMenuVisible(false)}>
+          <TouchableOpacity style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-start', alignItems: 'flex-end', paddingTop: insets.top + 70, paddingRight: 24 }} activeOpacity={1} onPress={() => setIsSettingsMenuVisible(false)}>
+            <View style={localStyles.settingsMenu}>
+              <TouchableOpacity style={localStyles.settingsMenuItem} onPress={() => { setIsSettingsMenuVisible(false); setIsManageCategoriesVisible(true); }}>
+                <Ionicons name="pricetag-outline" size={20} color={Colors.text.primary} />
+                <Text style={localStyles.settingsMenuText}>Manage Categories</Text>
+              </TouchableOpacity>
+              <View style={localStyles.settingsMenuDivider} />
+              <TouchableOpacity style={localStyles.settingsMenuItem} onPress={() => { setIsSettingsMenuVisible(false); setIsManageWalletsVisible(true); }}>
+                <Ionicons name="wallet-outline" size={20} color={Colors.text.primary} />
+                <Text style={localStyles.settingsMenuText}>Manage Wallets</Text>
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+        </Modal>
+
+        {/* Manage Categories Modal */}
+        {isManageCategoriesVisible && (
+          <ManageCategoriesModal
+            visible={isManageCategoriesVisible}
+            onClose={() => setIsManageCategoriesVisible(false)}
+            categories={categories}
+            onAddCategory={addCategory}
+            onUpdateCategory={updateCategory}
+            onDeleteCategory={deleteCategory}
+          />
+        )}
+
+        {/* Manage Wallets Modal */}
+        {isManageWalletsVisible && (
+          <ManageWalletsModal
+            visible={isManageWalletsVisible}
+            onClose={() => setIsManageWalletsVisible(false)}
+            wallets={wallets}
+            onAddWallet={addWallet}
+            onUpdateWallet={updateWallet}
+            onDeleteWallet={deleteWallet}
+          />
+        )}
       </LinearGradient>
     </GestureHandlerRootView>
   );
 }
 
 const localStyles = StyleSheet.create({
+  settingsMenu: {
+    backgroundColor: Colors.background.secondary,
+    borderRadius: 16,
+    padding: 8,
+    width: 220,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    elevation: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.05)'
+  },
+  settingsMenuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 12,
+  },
+  settingsMenuText: {
+    color: Colors.text.primary,
+    fontSize: 15,
+    fontWeight: '500',
+    marginLeft: 12,
+  },
+  settingsMenuDivider: {
+    height: 1,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    marginVertical: 4,
+  },
   submenuContainer: {
     paddingHorizontal: 24,
     paddingBottom: 24,

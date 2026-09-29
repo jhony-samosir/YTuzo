@@ -2,7 +2,7 @@ import * as SQLite from 'expo-sqlite';
 import { DEFAULT_WALLET_ID, DEFAULT_CATEGORY_ID } from '../constants/defaults';
 
 export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
-  const DATABASE_VERSION = 8;
+  const DATABASE_VERSION = 10;
   let result = await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version');
   let currentDbVersion = result?.user_version ?? 0;
 
@@ -152,6 +152,36 @@ export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
       `);
     } catch (e) {
       console.warn('Column is_paused might already exist on subscriptions');
+    }
+  }
+
+  // Migration logic for v9 (Add parent_id to categories for Sub-Categories support)
+  if (currentDbVersion < 9) {
+    try {
+      await db.execAsync(`
+        ALTER TABLE categories ADD COLUMN parent_id TEXT;
+      `);
+      // Seed initial sub-categories as an example based on the idea
+      await db.execAsync(`
+        INSERT OR IGNORE INTO categories (id, name, icon, color, parent_id) VALUES
+        ('cat-sub-1', 'Jepang', 'airplane', '#38BDF8', 'cat-2'),
+        ('cat-sub-2', 'Prancis', 'airplane', '#38BDF8', 'cat-2'),
+        ('cat-sub-3', 'Makan Siang', 'fast-food', '#FACC15', '${DEFAULT_CATEGORY_ID}'),
+        ('cat-sub-4', 'Makan Malam', 'restaurant', '#FACC15', '${DEFAULT_CATEGORY_ID}');
+      `);
+    } catch (e) {
+      console.warn('Migration v9 failed', e);
+    }
+  }
+
+  // Migration logic for v10 (Retry adding parent_id if it failed previously)
+  if (currentDbVersion < 10) {
+    try {
+      await db.execAsync(`
+        ALTER TABLE categories ADD COLUMN parent_id TEXT;
+      `);
+    } catch (e) {
+      // Ignored: it means the column probably already exists
     }
   }
   

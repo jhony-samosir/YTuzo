@@ -278,6 +278,130 @@ export function useFinanceData() {
     }
   }, [db, loadStaticData]);
 
+  const addCategory = useCallback(async (cat: Omit<Category, 'id'>) => {
+    try {
+      const id = 'cat-' + Crypto.randomUUID();
+      await db.runAsync(
+        'INSERT INTO categories (id, name, icon, color, parent_id) VALUES (?, ?, ?, ?, ?)',
+        [id, cat.name, cat.icon, cat.color, cat.parent_id ?? null]
+      );
+      loadStaticData();
+    } catch (e) {
+      console.error('Failed to add category', e);
+      loadStaticData();
+    }
+  }, [db, loadStaticData]);
+
+  const updateCategory = useCallback(async (id: string, cat: Partial<Category>) => {
+    try {
+      await db.runAsync(
+        'UPDATE categories SET name = ?, icon = ?, color = ? WHERE id = ?',
+        [cat.name!, cat.icon!, cat.color!, id]
+      );
+      loadStaticData();
+    } catch (e) {
+      console.error('Failed to update category', e);
+      loadStaticData();
+    }
+  }, [db, loadStaticData]);
+
+  const deleteCategory = useCallback(async (id: string, fallbackId: string) => {
+    try {
+      // Reassign logs
+      await db.runAsync(
+        'UPDATE finance_logs SET category_id = ? WHERE category_id = ?',
+        [fallbackId, id]
+      );
+      // Delete budgets attached to this category
+      await db.runAsync('DELETE FROM budgets WHERE category_id = ?', [id]);
+      // Delete category
+      await db.runAsync('DELETE FROM categories WHERE id = ?', [id]);
+      // If it's a parent, also reassign or delete its children (we just delete children for simplicity)
+      await db.runAsync('DELETE FROM categories WHERE parent_id = ?', [id]);
+      
+      loadStaticData();
+    } catch (e) {
+      console.error('Failed to delete category', e);
+      loadStaticData();
+    }
+  }, [db, loadStaticData]);
+
+  const addWallet = useCallback(async (wallet: Omit<Wallet, 'id' | 'balance' | 'currency'> & { balance?: number }) => {
+    try {
+      const id = 'wallet-' + Crypto.randomUUID();
+      await db.runAsync(
+        'INSERT INTO wallets (id, name, type, balance, color_theme) VALUES (?, ?, ?, ?, ?)',
+        [id, wallet.name, wallet.type, wallet.balance ?? 0, wallet.color_theme ?? null]
+      );
+      loadWallets();
+    } catch (e) {
+      console.error('Failed to add wallet', e);
+    }
+  }, [db, loadWallets]);
+
+  const updateWallet = useCallback(async (id: string, wallet: Partial<Wallet>) => {
+    try {
+      await db.runAsync(
+        'UPDATE wallets SET name = COALESCE(?, name), type = COALESCE(?, type), color_theme = COALESCE(?, color_theme) WHERE id = ?',
+        [wallet.name ?? null, wallet.type ?? null, wallet.color_theme ?? null, id]
+      );
+      loadWallets();
+    } catch (e) {
+      console.error('Failed to update wallet', e);
+    }
+  }, [db, loadWallets]);
+
+  const deleteWallet = useCallback(async (id: string, fallbackId: string) => {
+    try {
+      await db.runAsync(
+        'UPDATE finance_logs SET wallet_id = ? WHERE wallet_id = ?',
+        [fallbackId, id]
+      );
+      await db.runAsync('DELETE FROM wallets WHERE id = ?', [id]);
+      loadWallets();
+      loadTransactions();
+    } catch (e) {
+      console.error('Failed to delete wallet', e);
+    }
+  }, [db, loadWallets, loadTransactions]);
+
+  const deleteBudget = useCallback(async (id: string) => {
+    try {
+      setBudgets(prev => prev.filter(b => b.id !== id));
+      await db.runAsync('DELETE FROM budgets WHERE id = ?', [id]);
+    } catch (e) {
+      console.error('Failed to delete budget', e);
+      loadStaticData();
+    }
+  }, [db, loadStaticData]);
+
+  const addBudget = useCallback(async (budget: { category_id: string; monthly_limit: number }) => {
+    try {
+      const id = 'budg-' + Crypto.randomUUID();
+      await db.runAsync(
+        'INSERT INTO budgets (id, category_id, monthly_limit) VALUES (?, ?, ?)',
+        [id, budget.category_id, budget.monthly_limit]
+      );
+      loadStaticData();
+    } catch (e) {
+      console.error('Failed to add budget', e);
+      loadStaticData();
+    }
+  }, [db, loadStaticData]);
+
+  const updateBudget = useCallback(async (id: string, budget: { category_id?: string; monthly_limit?: number }) => {
+    try {
+      await db.runAsync(
+        'UPDATE budgets SET category_id = COALESCE(?, category_id), monthly_limit = COALESCE(?, monthly_limit) WHERE id = ?',
+        [budget.category_id ?? null, budget.monthly_limit ?? null, id]
+      );
+      loadStaticData();
+    } catch (e) {
+      console.error('Failed to update budget', e);
+      loadStaticData();
+    }
+  }, [db, loadStaticData]);
+
   const totalBalance = wallets.reduce((acc, w) => acc + w.balance, 0);
   const isLoading = loadingState.wallets || loadingState.transactions || loadingState.static;
 
@@ -298,6 +422,15 @@ export function useFinanceData() {
     updateTransaction,
     deleteSubscription,
     addSubscription,
-    updateSubscription
+    updateSubscription,
+    deleteBudget,
+    addBudget,
+    updateBudget,
+    addCategory,
+    updateCategory,
+    deleteCategory,
+    addWallet,
+    updateWallet,
+    deleteWallet
   };
 }

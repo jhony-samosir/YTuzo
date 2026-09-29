@@ -58,47 +58,49 @@ export const ScheduledTab: React.FC<ScheduledTabProps> = ({ subscriptions, onAdd
     const isDueSoon = !s.is_paused && diffDays >= 0 && diffDays <= 3;
 
     return (
-      <Animated.View key={s.id} entering={FadeInDown.delay(index * 50).springify()} layout={Layout.springify()} style={[styles.card, s.is_paused ? { opacity: 0.6 } : null]}>
-        <View style={styles.cardTop}>
-          <View style={[styles.iconBg, { backgroundColor: safeAlpha(s.color, 0.15) }]}>
-            <Ionicons name={s.icon as any || 'cash'} size={24} color={s.color || '#FFF'} />
-          </View>
-          <View style={styles.cardInfo}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={styles.name}>{s.name}</Text>
-              {isDueSoon && (
-                <View style={styles.dueSoonBadge}>
-                  <Text style={styles.dueSoonText}>Due Soon</Text>
-                </View>
-              )}
+      <Animated.View key={s.id} entering={FadeInDown.delay(index * 50).springify()} layout={Layout.springify()} style={{ marginBottom: 12 }}>
+        <View style={[styles.card, s.is_paused ? { opacity: 0.6 } : null, { marginBottom: 0 }]}>
+          <View style={styles.cardTop}>
+            <View style={[styles.iconBg, { backgroundColor: safeAlpha(s.color, 0.15) }]}>
+              <Ionicons name={s.icon as any || 'cash'} size={24} color={s.color || '#FFF'} />
             </View>
-            <Text style={styles.cycleText}>
-              {s.is_paused ? 'Paused' : `Repeats ${s.billing_cycle.toLowerCase()}`}
+            <View style={styles.cardInfo}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={styles.name}>{s.name}</Text>
+                {isDueSoon && (
+                  <View style={styles.dueSoonBadge}>
+                    <Text style={styles.dueSoonText}>Due Soon</Text>
+                  </View>
+                )}
+              </View>
+              <Text style={styles.cycleText}>
+                {s.is_paused ? 'Paused' : `Repeats ${s.billing_cycle.toLowerCase()}`}
+              </Text>
+            </View>
+            <Text style={[styles.amount, { color: s.type === 'INCOME' ? Colors.brand.mint : Colors.text.primary }]}>
+              {s.type === 'INCOME' ? '+' : '-'}{formatMoney(s.amount)}
             </Text>
           </View>
-          <Text style={[styles.amount, { color: s.type === 'INCOME' ? Colors.brand.mint : Colors.text.primary }]}>
-            {s.type === 'INCOME' ? '+' : '-'}{formatMoney(s.amount)}
-          </Text>
-        </View>
 
-        <View style={styles.divider} />
-        
-        <View style={styles.cardBottom}>
-          <Text style={[styles.nextDate, s.is_paused ? { color: Colors.text.muted } : null]}>
-            {s.is_paused ? 'Execution Paused' : `Next: ${dateStr}`}
-          </Text>
+          <View style={styles.divider} />
           
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <TouchableOpacity 
-              style={[styles.actionBtn, s.is_paused ? { backgroundColor: 'rgba(16, 185, 129, 0.2)' } : null]} 
-              onPress={() => onTogglePause?.(s.id, !s.is_paused)}
-            >
-              <Ionicons name={s.is_paused ? "play" : "pause"} size={18} color={s.is_paused ? Colors.brand.mint : "#FFF"} />
-            </TouchableOpacity>
+          <View style={styles.cardBottom}>
+            <Text style={[styles.nextDate, s.is_paused ? { color: Colors.text.muted } : null]}>
+              {s.is_paused ? 'Execution Paused' : `Next: ${dateStr}`}
+            </Text>
             
-            <TouchableOpacity style={[styles.actionBtn, { marginLeft: 8 }]} onPress={() => onEdit(s)}>
-              <Ionicons name="ellipsis-horizontal" size={18} color="#FFF" />
-            </TouchableOpacity>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <TouchableOpacity 
+                style={[styles.actionBtn, s.is_paused ? { backgroundColor: 'rgba(16, 185, 129, 0.2)' } : null]} 
+                onPress={() => onTogglePause?.(s.id, !s.is_paused)}
+              >
+                <Ionicons name={s.is_paused ? "play" : "pause"} size={18} color={s.is_paused ? Colors.brand.mint : "#FFF"} />
+              </TouchableOpacity>
+              
+              <TouchableOpacity style={[styles.actionBtn, { marginLeft: 8 }]} onPress={() => onEdit(s)}>
+                <Ionicons name="ellipsis-horizontal" size={18} color="#FFF" />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Animated.View>

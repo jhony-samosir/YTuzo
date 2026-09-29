@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { financeStyles as styles } from './financeStyles';
 import { EmptyState } from '../ui/EmptyState';
@@ -8,9 +8,11 @@ import { Budget } from '../../types/finance';
 
 interface BudgetsTabProps {
   budgets: Budget[];
+  onAdd?: () => void;
+  onEdit?: (budget: Budget) => void;
 }
 
-export const BudgetsTab: React.FC<BudgetsTabProps> = ({ budgets }) => {
+export const BudgetsTab: React.FC<BudgetsTabProps> = ({ budgets, onAdd, onEdit }) => {
   if (budgets.length === 0) {
     return (
       <View style={styles.tabContent}>
@@ -19,6 +21,7 @@ export const BudgetsTab: React.FC<BudgetsTabProps> = ({ budgets }) => {
           title="No Budgets Set" 
           description="Take control of your spending by creating monthly budgets."
           actionLabel="Create Budget"
+          onAction={onAdd}
         />
       </View>
     );
@@ -28,12 +31,19 @@ export const BudgetsTab: React.FC<BudgetsTabProps> = ({ budgets }) => {
     <View style={styles.tabContent}>
       <View style={styles.budgetList}>
         {budgets.map(b => {
-          // For demo purposes, generating a static mock spent amount.
-          const spent = b.monthly_limit * 0.65; 
-          const progress = Math.min((spent / (b.monthly_limit || 1)) * 100, 100);
+          const spent = b.spent || 0; 
+          const rawProgress = (spent / (b.monthly_limit || 1)) * 100;
+          const progress = Math.min(rawProgress, 100);
+          
+          const isOverBudget = rawProgress >= 100;
+          const isNearBudget = rawProgress >= 80 && !isOverBudget;
+          
+          let progressColor = b.category_color;
+          if (isOverBudget) progressColor = '#F43F5E'; // Ruby Red
+          else if (isNearBudget) progressColor = '#F59E0B'; // Amber Warning
           
           return (
-            <View key={b.id} style={localStyles.budgetItem}>
+            <View key={b.id} style={[localStyles.budgetItem, isOverBudget && localStyles.budgetItemOver]}>
               <View style={localStyles.budgetHeader}>
                 <View style={localStyles.budgetTitleRow}>
                   <View style={[localStyles.iconWrapper, { backgroundColor: safeAlpha(b.category_color, 0.15) }]}>
@@ -41,15 +51,24 @@ export const BudgetsTab: React.FC<BudgetsTabProps> = ({ budgets }) => {
                   </View>
                   <Text style={localStyles.budgetName}>{b.category_name || 'Category'}</Text>
                 </View>
-                <Text style={localStyles.budgetPercent}>{Math.round(progress)}%</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Text style={[localStyles.budgetPercent, isOverBudget && { color: '#F43F5E' }]}>
+                    {Math.round(rawProgress)}%
+                  </Text>
+                  {onEdit && (
+                    <TouchableOpacity onPress={() => onEdit(b)} style={{ marginLeft: 12 }}>
+                      <Ionicons name="ellipsis-horizontal" size={18} color="rgba(255,255,255,0.5)" />
+                    </TouchableOpacity>
+                  )}
+                </View>
               </View>
               
-              <Text style={localStyles.budgetAmount}>
+              <Text style={[localStyles.budgetAmount, isOverBudget && { color: '#F43F5E' }]}>
                 {formatMoney(spent)} <Text style={localStyles.budgetLimit}>/ {formatMoney(b.monthly_limit)}</Text>
               </Text>
 
               <View style={localStyles.progressBarBg}>
-                <View style={[localStyles.progressBarFill, { width: `${progress}%`, backgroundColor: b.category_color }]} />
+                <View style={[localStyles.progressBarFill, { width: `${progress}%`, backgroundColor: progressColor }]} />
               </View>
             </View>
           );
@@ -117,4 +136,8 @@ const localStyles = StyleSheet.create({
     height: '100%',
     borderRadius: 6,
   },
+  budgetItemOver: {
+    borderColor: 'rgba(244, 63, 94, 0.3)',
+    backgroundColor: 'rgba(244, 63, 94, 0.05)',
+  }
 });
