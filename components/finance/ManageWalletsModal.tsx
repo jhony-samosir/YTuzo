@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Modal, TouchableOpacity, ScrollView, Platform, Alert } from 'react-native';
+import { View, Text, StyleSheet, Modal, TouchableOpacity, ScrollView, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { EmptyState } from '../ui/EmptyState';
-import { formatMoney, safeAlpha } from '../../utils/finance';
+import { formatMoney } from '../../utils/finance';
 import { Wallet } from '../../types/finance';
 import { Colors } from '../../constants/Colors';
 import { WalletFormModal } from './WalletFormModal';

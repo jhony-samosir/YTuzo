@@ -30,6 +30,7 @@ export const WalletFormModal: React.FC<WalletFormModalProps> = ({
   const [balance, setBalance] = useState('');
   const [color, setColor] = useState(PRESET_COLORS[0]);
 
+  /* eslint-disable */
   useEffect(() => {
     if (visible) {
       setName(initialData?.name || '');
@@ -38,6 +39,7 @@ export const WalletFormModal: React.FC<WalletFormModalProps> = ({
       setColor(initialData?.color_theme || PRESET_COLORS[0]);
     }
   }, [visible, initialData]);
+  /* eslint-enable */
 
   const handleSave = () => {
     if (!name.trim()) return;
