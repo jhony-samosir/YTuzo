@@ -1,7 +1,7 @@
 export interface Wallet {
   id: string;
   name: string;
-  type: 'BANK' | 'CASH' | 'WALLET';
+  type: 'BANK' | 'CASH' | 'WALLET' | 'E-WALLET' | 'CREDIT' | 'INVEST';
   balance: number;
   color_theme: string;
 }
@@ -11,6 +11,7 @@ export interface Category {
   name: string;
   icon: string;
   color: string;
+  parent_id?: string;
 }
 
 export interface Budget {
