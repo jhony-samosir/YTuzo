@@ -3,79 +3,130 @@ import { DEFAULT_WALLET_ID, DEFAULT_CATEGORY_ID } from '../constants/defaults';
 import { seedInitialData } from './seed';
 
 export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
-  const DATABASE_VERSION = 10;
+  const DATABASE_VERSION = 1; // v1: Clean Architecture (Progress separated from Dictionary)
   let result = await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version');
   let currentDbVersion = result?.user_version ?? 0;
 
-  if (currentDbVersion >= DATABASE_VERSION) {
+  if (currentDbVersion === DATABASE_VERSION) {
     return;
   }
   
   await db.execAsync(`PRAGMA journal_mode = 'wal';`);
+  await db.execAsync(`PRAGMA foreign_keys = ON;`);
 
   if (currentDbVersion < 1) {
-    // Initial schema gabungan yang bersih
+    // v1: Enterprise Migration — initial schema
     await db.execAsync(`
-      CREATE TABLE IF NOT EXISTS finance_logs (
+      DROP VIEW IF EXISTS daily_activities;
+      DROP TABLE IF EXISTS finance_logs;
+      DROP TABLE IF EXISTS sport_logs;
+      DROP TABLE IF EXISTS fuel_logs;
+      DROP TABLE IF EXISTS user_profile;
+      DROP TABLE IF EXISTS app_preferences;
+      DROP TABLE IF EXISTS quick_actions_config;
+      DROP TABLE IF EXISTS budgets;
+      DROP TABLE IF EXISTS master_dictionary;
+      DROP TABLE IF EXISTS subscriptions;
+      DROP TABLE IF EXISTS user_vocab_progress;
+      DROP TABLE IF EXISTS categories;
+      DROP TABLE IF EXISTS wallets;
+
+      CREATE TABLE wallets (
         id TEXT PRIMARY KEY NOT NULL,
+        user_id TEXT NOT NULL,
+        name TEXT NOT NULL,
+        type TEXT NOT NULL,
+        balance REAL NOT NULL,
+        color_theme TEXT NOT NULL
+      );
+
+      CREATE TABLE categories (
+        id TEXT PRIMARY KEY NOT NULL,
+        user_id TEXT NOT NULL,
+        name TEXT NOT NULL,
+        icon TEXT NOT NULL,
+        color TEXT NOT NULL,
+        parent_id TEXT,
+        FOREIGN KEY (parent_id) REFERENCES categories (id) ON DELETE CASCADE
+      );
+
+      CREATE TABLE finance_logs (
+        id TEXT PRIMARY KEY NOT NULL,
+        user_id TEXT NOT NULL,
         title TEXT NOT NULL,
         subtitle TEXT NOT NULL,
         amount REAL NOT NULL,
         type TEXT NOT NULL,
         icon TEXT NOT NULL,
         color TEXT NOT NULL,
-        created_at INTEGER NOT NULL,
-        updated_at INTEGER NOT NULL,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
         sync_status INTEGER DEFAULT 0,
         wallet_id TEXT DEFAULT '${DEFAULT_WALLET_ID}',
-        category_id TEXT DEFAULT '${DEFAULT_CATEGORY_ID}'
+        category_id TEXT DEFAULT '${DEFAULT_CATEGORY_ID}',
+        FOREIGN KEY (wallet_id) REFERENCES wallets (id) ON DELETE CASCADE,
+        FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE CASCADE
       );
-      CREATE TABLE IF NOT EXISTS sport_logs (
+      CREATE INDEX IF NOT EXISTS idx_finance_user_date ON finance_logs(user_id, created_at);
+
+      CREATE TABLE sport_logs (
         id TEXT PRIMARY KEY NOT NULL,
+        user_id TEXT NOT NULL,
         sport_type TEXT NOT NULL,
         distance_km REAL NOT NULL,
         duration_mins INTEGER NOT NULL,
         calories INTEGER NOT NULL,
-        created_at INTEGER NOT NULL,
-        updated_at INTEGER NOT NULL,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
         sync_status INTEGER DEFAULT 0
       );
-      CREATE TABLE IF NOT EXISTS fuel_logs (
+      CREATE INDEX IF NOT EXISTS idx_sport_user_date ON sport_logs(user_id, created_at);
+
+      CREATE TABLE fuel_logs (
         id TEXT PRIMARY KEY NOT NULL,
+        user_id TEXT NOT NULL,
         odometer INTEGER NOT NULL,
         liters REAL NOT NULL,
         price_per_liter REAL NOT NULL,
         total_cost REAL NOT NULL,
         location TEXT NOT NULL,
-        created_at INTEGER NOT NULL,
-        updated_at INTEGER NOT NULL,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
         sync_status INTEGER DEFAULT 0
       );
-      CREATE VIEW IF NOT EXISTS daily_activities AS
-        SELECT id, 'FINANCE' as module_type, title as primary_text, subtitle as secondary_text, amount as main_value, type as sub_value, icon, color, created_at, sync_status FROM finance_logs
+      CREATE INDEX IF NOT EXISTS idx_fuel_user_date ON fuel_logs(user_id, created_at);
+
+      CREATE VIEW daily_activities AS
+        SELECT id, user_id, 'FINANCE' as module_type, title as primary_text, subtitle as secondary_text, amount as main_value, type as sub_value, icon, color, created_at, sync_status FROM finance_logs
         UNION ALL
-        SELECT id, 'SPORTS' as module_type, sport_type as primary_text, distance_km || ' km • ' || duration_mins || ' mins' as secondary_text, calories as main_value, 'KCAL' as sub_value, 'bicycle' as icon, '#38BDF8' as color, created_at, sync_status FROM sport_logs
+        SELECT id, user_id, 'SPORTS' as module_type, sport_type as primary_text, distance_km || ' km • ' || duration_mins || ' mins' as secondary_text, calories as main_value, 'KCAL' as sub_value, 'bicycle' as icon, '#38BDF8' as color, created_at, sync_status FROM sport_logs
         UNION ALL
-        SELECT id, 'FUEL' as module_type, location as primary_text, liters || ' L • Odo: ' || odometer as secondary_text, total_cost as main_value, 'EXPENSE' as sub_value, 'water' as icon, '#F43F5E' as color, created_at, sync_status FROM fuel_logs;
-      CREATE TABLE IF NOT EXISTS user_profile (
+        SELECT id, user_id, 'FUEL' as module_type, location as primary_text, liters || ' L • Odo: ' || odometer as secondary_text, total_cost as main_value, 'EXPENSE' as sub_value, 'water' as icon, '#F43F5E' as color, created_at, sync_status FROM fuel_logs;
+
+      CREATE TABLE user_profile (
         id TEXT PRIMARY KEY NOT NULL,
+        user_id TEXT NOT NULL,
         first_name TEXT NOT NULL,
         last_name TEXT NOT NULL,
         avatar_url TEXT,
         reputation_level TEXT NOT NULL,
-        join_date INTEGER NOT NULL,
+        join_date TEXT NOT NULL,
         sync_status INTEGER DEFAULT 0
       );
-      CREATE TABLE IF NOT EXISTS app_preferences (
+
+      CREATE TABLE app_preferences (
         id TEXT PRIMARY KEY NOT NULL,
+        user_id TEXT NOT NULL,
         is_biometric_enabled INTEGER NOT NULL,
         is_push_notif_enabled INTEGER NOT NULL,
         is_dark_theme INTEGER NOT NULL,
         language TEXT NOT NULL,
         sync_status INTEGER DEFAULT 0
       );
-      CREATE TABLE IF NOT EXISTS quick_actions_config (
+
+      CREATE TABLE quick_actions_config (
         id TEXT PRIMARY KEY NOT NULL,
+        user_id TEXT NOT NULL,
         action_id TEXT NOT NULL,
         slot_index INTEGER NOT NULL,
         icon_name TEXT NOT NULL,
@@ -83,38 +134,31 @@ export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
         icon_bg TEXT NOT NULL,
         label_text TEXT NOT NULL
       );
-      CREATE TABLE IF NOT EXISTS wallets (
+
+      CREATE TABLE budgets (
         id TEXT PRIMARY KEY NOT NULL,
-        name TEXT NOT NULL,
-        type TEXT NOT NULL,
-        balance REAL NOT NULL,
-        color_theme TEXT NOT NULL
-      );
-      CREATE TABLE IF NOT EXISTS categories (
-        id TEXT PRIMARY KEY NOT NULL,
-        name TEXT NOT NULL,
-        icon TEXT NOT NULL,
-        color TEXT NOT NULL,
-        parent_id TEXT
-      );
-      CREATE TABLE IF NOT EXISTS budgets (
-        id TEXT PRIMARY KEY NOT NULL,
+        user_id TEXT NOT NULL,
         category_id TEXT NOT NULL,
-        monthly_limit REAL NOT NULL
+        monthly_limit REAL NOT NULL,
+        FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE CASCADE
       );
-      CREATE TABLE IF NOT EXISTS subscriptions (
+
+      CREATE TABLE subscriptions (
         id TEXT PRIMARY KEY NOT NULL,
+        user_id TEXT NOT NULL,
         name TEXT NOT NULL,
         amount REAL NOT NULL,
         billing_cycle TEXT NOT NULL,
-        next_billing_date INTEGER NOT NULL,
+        next_billing_date TEXT NOT NULL,
         icon TEXT NOT NULL,
         color TEXT NOT NULL,
         wallet_id TEXT,
-        type TEXT,
-        is_paused INTEGER DEFAULT 0
+        type TEXT NOT NULL DEFAULT 'EXPENSE',
+        is_paused INTEGER DEFAULT 0,
+        FOREIGN KEY (wallet_id) REFERENCES wallets (id) ON DELETE CASCADE
       );
-      CREATE TABLE IF NOT EXISTS english_dictionary (
+
+      CREATE TABLE master_dictionary (
         id TEXT PRIMARY KEY NOT NULL,
         base_word TEXT NOT NULL,
         translation TEXT NOT NULL,
@@ -123,91 +167,68 @@ export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
         v3 TEXT,
         v_ing TEXT,
         example_sentence TEXT,
-        is_favorite INTEGER DEFAULT 0,
-        is_read INTEGER DEFAULT 0,
-        last_read_at INTEGER,
-        created_at INTEGER NOT NULL,
-        updated_at INTEGER NOT NULL
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        sync_status INTEGER DEFAULT 0
       );
+      CREATE INDEX IF NOT EXISTS idx_dict_word ON master_dictionary(base_word);
+      CREATE INDEX IF NOT EXISTS idx_dict_type ON master_dictionary(word_type);
+
+      CREATE TABLE user_vocab_progress (
+        id TEXT PRIMARY KEY NOT NULL,
+        user_id TEXT NOT NULL,
+        word_id TEXT NOT NULL,
+        status TEXT DEFAULT 'LEARNING',
+        is_favorite INTEGER NOT NULL DEFAULT 0,
+        last_read_at TEXT,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        sync_status INTEGER DEFAULT 0,
+        FOREIGN KEY (word_id) REFERENCES master_dictionary (id) ON DELETE CASCADE
+      );
+      CREATE INDEX IF NOT EXISTS idx_vocab_user ON user_vocab_progress(user_id);
+      CREATE INDEX IF NOT EXISTS idx_vocab_word ON user_vocab_progress(word_id);
+      CREATE UNIQUE INDEX IF NOT EXISTS idx_vocab_user_word ON user_vocab_progress(user_id, word_id);
     `);
   }
-
-  // Migration logic for v5 (Add missing columns to finance_logs safely)
-  if (currentDbVersion < 5) {
-    try {
-      await db.execAsync(`
-        ALTER TABLE finance_logs ADD COLUMN wallet_id TEXT DEFAULT '${DEFAULT_WALLET_ID}';
-        ALTER TABLE finance_logs ADD COLUMN category_id TEXT DEFAULT '${DEFAULT_CATEGORY_ID}';
-      `);
-    } catch (e) {
-      console.warn('Columns wallet_id or category_id already exist');
-    }
-  }
-
-  // Migration logic for v6 (Add type column to subscriptions)
-  if (currentDbVersion < 6) {
-    try {
-      await db.execAsync(`
-        ALTER TABLE subscriptions ADD COLUMN type TEXT NOT NULL DEFAULT 'EXPENSE';
-      `);
-    } catch (e) {
-      console.warn('Column type might already exist on subscriptions');
-    }
-  }
-
-  // Migration logic for v7 (Add wallet_id to subscriptions)
-  if (currentDbVersion < 7) {
-    try {
-      await db.execAsync(`
-        ALTER TABLE subscriptions ADD COLUMN wallet_id TEXT DEFAULT '${DEFAULT_WALLET_ID}';
-      `);
-    } catch (e) {
-      console.warn('Column wallet_id might already exist on subscriptions');
-    }
-  }
-
-  // Migration logic for v9 (Add is_paused to subscriptions)
-  if (currentDbVersion < 9) {
-    try {
-      await db.execAsync(`
-        ALTER TABLE subscriptions ADD COLUMN is_paused INTEGER DEFAULT 0;
-      `);
-    } catch (e) {
-      console.warn('Column is_paused might already exist on subscriptions');
-    }
-  }
-
-  // Migration logic for v10 (Add english_dictionary table)
-  if (currentDbVersion < 10) {
-    try {
-      await db.execAsync(`
-        CREATE TABLE IF NOT EXISTS english_dictionary (
-          id TEXT PRIMARY KEY NOT NULL,
-          base_word TEXT NOT NULL,
-          translation TEXT NOT NULL,
-          word_type TEXT NOT NULL,
-          v2 TEXT,
-          v3 TEXT,
-          v_ing TEXT,
-          example_sentence TEXT,
-          is_favorite INTEGER DEFAULT 0,
-          is_read INTEGER DEFAULT 0,
-          last_read_at INTEGER,
-          created_at INTEGER NOT NULL,
-          updated_at INTEGER NOT NULL
-        );
-      `);
-    } catch (e) {
-      console.warn('Migration for english_dictionary failed');
-    }
-  }
   
-  // Seed data only on fresh install (version 0 = new device / first install)
+  // Seed data on fresh install (v0 → v2)
   if (currentDbVersion === 0) {
     await seedInitialData(db);
+    
+    // Inject bundled dictionary.db if available and table is empty
+    try {
+      const countResult = await db.getFirstAsync<{count: number}>('SELECT COUNT(*) as count FROM master_dictionary');
+      if (countResult && countResult.count === 0) {
+        console.log('Mencoba menyuntikkan kamus dari bundled dictionary.db...');
+        const { Asset } = require('expo-asset');
+        const FileSystem = require('expo-file-system');
+        
+        const dictAsset = require('../assets/dictionary.db');
+        const asset = await Asset.loadAsync(dictAsset);
+        const tempUri = FileSystem.documentDirectory + 'temp_dict.db';
+        
+        await FileSystem.downloadAsync(asset[0].uri, tempUri);
+        await db.execAsync(`ATTACH DATABASE '${tempUri}' AS dict_db;`);
+        await db.execAsync(`
+          INSERT INTO main.master_dictionary 
+            (id, base_word, translation, word_type, v2, v3, v_ing, example_sentence, created_at, updated_at, sync_status)
+          SELECT 
+            id, base_word, translation, word_type, v2, v3, v_ing, example_sentence,
+            created_at, updated_at, sync_status
+          FROM dict_db.master_dictionary;
+        `);
+        await db.execAsync(`DETACH DATABASE dict_db;`);
+        await FileSystem.deleteAsync(tempUri);
+        
+        console.log('Berhasil menyuntikkan kamus dari bundled dictionary.db!');
+      }
+    } catch (e) {
+      console.warn('Bundled dictionary.db tidak tersedia, menggunakan seed data default:', e);
+    }
   }
 
   // Always bump the version after all migrations complete
   await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
+  console.log(`Database migrated to version ${DATABASE_VERSION}`);
 }
-

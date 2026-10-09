@@ -61,25 +61,25 @@ export default function RootLayout() {
       
       // Start the ultra-slow cinematic zoom
       // eslint-disable-next-line react-hooks/immutability
-      scale.value = withTiming(1.02, { duration: 4000, easing: Easing.out(Easing.cubic) });
+      scale.value = withTiming(1.02, { duration: 1500, easing: Easing.out(Easing.cubic) });
       
-      // Hold the custom JS splash screen for 3 seconds for the cinematic effect
+      // Hold the custom JS splash screen for 1 second instead of 3
       setTimeout(() => {
         setSplashAnimationComplete(true);
-      }, 3000);
+      }, 1000);
 
       // Add Premium Haptics that trigger exactly when the elements fade in
       setTimeout(() => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
-      }, 300); // Triggers with "YTUZO"
+      }, 100); // Triggers with "YTUZO"
       
       setTimeout(() => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
-      }, 800); // Triggers with Logo
+      }, 300); // Triggers with Logo
       
       setTimeout(() => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
-      }, 1500); // Triggers with Slogan
+      }, 600); // Triggers with Slogan
     }
   }, [isAppReady, scale]);
 
@@ -92,12 +92,11 @@ export default function RootLayout() {
       <StatusBar barStyle="light-content" backgroundColor="#000000" />
       
       <ThemeProvider value={DarkTheme}>
-        <SQLiteProvider databaseName="ytuzo.db" onInit={onDbInit}>
+        <SQLiteProvider databaseName="ytuzo_clean_v2.db" onInit={onDbInit}>
           <View style={{ flex: 1 }}>
             <Stack>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               <Stack.Screen name="modules" options={{ headerShown: false }} />
-              <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
             </Stack>
           </View>
         </SQLiteProvider>
@@ -113,7 +112,7 @@ export default function RootLayout() {
           <Animated.View style={[{ alignItems: 'center' }, cinematicZoom]}>
             {/* Brand Name (Executive Layout) */}
             <Animated.Text 
-              entering={FadeIn.duration(1500).delay(300).easing(Easing.out(Easing.ease))}
+              entering={FadeIn.duration(800).delay(100).easing(Easing.out(Easing.ease))}
               style={{ 
                 color: '#FFFFFF', // Back to pure white for ultra-high contrast
                 fontSize: 32,
@@ -129,14 +128,14 @@ export default function RootLayout() {
 
             {/* Aesthetic Luxury Logo Animation (Acts as an emblem) */}
             <Animated.Image 
-              entering={FadeInDown.duration(1200).delay(800).easing(Easing.out(Easing.exp))} 
+              entering={FadeInDown.duration(800).delay(300).easing(Easing.out(Easing.exp))} 
               source={require('../assets/images/splash_v2.png')} 
               style={{ width: 75, height: 75, resizeMode: 'contain', marginBottom: 32 }} 
             />
 
             {/* Subtitle / Slogan */}
             <Animated.Text 
-              entering={FadeIn.duration(1500).delay(1500).easing(Easing.out(Easing.ease))}
+              entering={FadeIn.duration(800).delay(600).easing(Easing.out(Easing.ease))}
               style={{ 
                 color: '#8A8A93', 
                 fontSize: 8,

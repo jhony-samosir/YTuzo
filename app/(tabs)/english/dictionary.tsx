@@ -136,7 +136,7 @@ export default function EnglishDictionaryScreen() {
 
   const handleOptionsPress = useCallback((item: VocabItem) => {
     setActionSheetVocab(item);
-  }, []);
+  }, [setActionSheetVocab]);
 
   const handleFormSubmit = async (data: Omit<VocabItem, 'id' | 'is_favorite' | 'is_read' | 'last_read_at'>) => {
     if (editingVocab) {
@@ -300,7 +300,7 @@ export default function EnglishDictionaryScreen() {
                 setTimeout(() => {
                   setEditingVocab(vocab);
                   setIsModalVisible(true);
-                }, 300);
+                }, 50);
               }}
             >
               <Ionicons name="create-outline" size={24} color={Colors.text.primary} />
@@ -312,7 +312,7 @@ export default function EnglishDictionaryScreen() {
               onPress={() => {
                 const vocab = actionSheetVocab;
                 setActionSheetVocab(null);
-                setTimeout(() => setDeleteConfirmVocab(vocab), 300);
+                setTimeout(() => setDeleteConfirmVocab(vocab), 50);
               }}
             >
               <Ionicons name="trash-outline" size={24} color={Colors.brand.ruby} />

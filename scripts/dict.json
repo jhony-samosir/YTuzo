@@ -1,0 +1,2258 @@
+[
+  {
+    "word": "abandon",
+    "translation": "meninggalkan / mengabaikan",
+    "type": "VERB",
+    "v2": "abandoned",
+    "v3": "abandoned",
+    "v_ing": "abandoning",
+    "example": "He decided to abandon the project."
+  },
+  {
+    "word": "accept",
+    "translation": "menerima / menyetujui",
+    "type": "VERB",
+    "v2": "accepted",
+    "v3": "accepted",
+    "v_ing": "accepting",
+    "example": "She accepted the job offer."
+  },
+  {
+    "word": "achieve",
+    "translation": "mencapai / meraih",
+    "type": "VERB",
+    "v2": "achieved",
+    "v3": "achieved",
+    "v_ing": "achieving",
+    "example": "He achieved his goal last year."
+  },
+  {
+    "word": "act",
+    "translation": "bertindak / berakting",
+    "type": "VERB",
+    "v2": "acted",
+    "v3": "acted",
+    "v_ing": "acting",
+    "example": "You need to act quickly."
+  },
+  {
+    "word": "adapt",
+    "translation": "beradaptasi / menyesuaikan",
+    "type": "VERB",
+    "v2": "adapted",
+    "v3": "adapted",
+    "v_ing": "adapting",
+    "example": "Animals adapt to their environment."
+  },
+  {
+    "word": "add",
+    "translation": "menambahkan",
+    "type": "VERB",
+    "v2": "added",
+    "v3": "added",
+    "v_ing": "adding",
+    "example": "Add some salt to the soup."
+  },
+  {
+    "word": "admire",
+    "translation": "mengagumi",
+    "type": "VERB",
+    "v2": "admired",
+    "v3": "admired",
+    "v_ing": "admiring",
+    "example": "I admire her dedication."
+  },
+  {
+    "word": "admit",
+    "translation": "mengakui / mengaku",
+    "type": "VERB",
+    "v2": "admitted",
+    "v3": "admitted",
+    "v_ing": "admitting",
+    "example": "He admitted his mistake."
+  },
+  {
+    "word": "adopt",
+    "translation": "mengadopsi / menerapkan",
+    "type": "VERB",
+    "v2": "adopted",
+    "v3": "adopted",
+    "v_ing": "adopting",
+    "example": "They decided to adopt a new strategy."
+  },
+  {
+    "word": "advance",
+    "translation": "memajukan / maju",
+    "type": "VERB",
+    "v2": "advanced",
+    "v3": "advanced",
+    "v_ing": "advancing",
+    "example": "Technology continues to advance."
+  },
+  {
+    "word": "agree",
+    "translation": "setuju / menyetujui",
+    "type": "VERB",
+    "v2": "agreed",
+    "v3": "agreed",
+    "v_ing": "agreeing",
+    "example": "I agree with your point of view."
+  },
+  {
+    "word": "allow",
+    "translation": "mengizinkan / membolehkan",
+    "type": "VERB",
+    "v2": "allowed",
+    "v3": "allowed",
+    "v_ing": "allowing",
+    "example": "The teacher allowed us to leave early."
+  },
+  {
+    "word": "analyze",
+    "translation": "menganalisis",
+    "type": "VERB",
+    "v2": "analyzed",
+    "v3": "analyzed",
+    "v_ing": "analyzing",
+    "example": "We need to analyze the data carefully."
+  },
+  {
+    "word": "announce",
+    "translation": "mengumumkan",
+    "type": "VERB",
+    "v2": "announced",
+    "v3": "announced",
+    "v_ing": "announcing",
+    "example": "The company announced a new product."
+  },
+  {
+    "word": "apply",
+    "translation": "melamar / menerapkan",
+    "type": "VERB",
+    "v2": "applied",
+    "v3": "applied",
+    "v_ing": "applying",
+    "example": "She applied for the job."
+  },
+  {
+    "word": "approach",
+    "translation": "mendekati / mendekat",
+    "type": "VERB",
+    "v2": "approached",
+    "v3": "approached",
+    "v_ing": "approaching",
+    "example": "The storm is approaching the coast."
+  },
+  {
+    "word": "argue",
+    "translation": "berdebat / berargumen",
+    "type": "VERB",
+    "v2": "argued",
+    "v3": "argued",
+    "v_ing": "arguing",
+    "example": "They argued about money all the time."
+  },
+  {
+    "word": "arrange",
+    "translation": "mengatur / menata",
+    "type": "VERB",
+    "v2": "arranged",
+    "v3": "arranged",
+    "v_ing": "arranging",
+    "example": "She arranged the flowers beautifully."
+  },
+  {
+    "word": "ask",
+    "translation": "bertanya / meminta",
+    "type": "VERB",
+    "v2": "asked",
+    "v3": "asked",
+    "v_ing": "asking",
+    "example": "He asked for help."
+  },
+  {
+    "word": "assist",
+    "translation": "membantu / mendampingi",
+    "type": "VERB",
+    "v2": "assisted",
+    "v3": "assisted",
+    "v_ing": "assisting",
+    "example": "She assisted the nurse with the patient."
+  },
+  {
+    "word": "avoid",
+    "translation": "menghindari",
+    "type": "VERB",
+    "v2": "avoided",
+    "v3": "avoided",
+    "v_ing": "avoiding",
+    "example": "Try to avoid eating junk food."
+  },
+  {
+    "word": "begin",
+    "translation": "memulai / mulai",
+    "type": "VERB",
+    "v2": "began",
+    "v3": "begun",
+    "v_ing": "beginning",
+    "example": "The meeting will begin at 9 AM."
+  },
+  {
+    "word": "believe",
+    "translation": "percaya / meyakini",
+    "type": "VERB",
+    "v2": "believed",
+    "v3": "believed",
+    "v_ing": "believing",
+    "example": "I believe in hard work."
+  },
+  {
+    "word": "break",
+    "translation": "memecahkan / istirahat",
+    "type": "VERB",
+    "v2": "broke",
+    "v3": "broken",
+    "v_ing": "breaking",
+    "example": "She broke the glass by accident."
+  },
+  {
+    "word": "bring",
+    "translation": "membawa",
+    "type": "VERB",
+    "v2": "brought",
+    "v3": "brought",
+    "v_ing": "bringing",
+    "example": "Please bring your ID card."
+  },
+  {
+    "word": "build",
+    "translation": "membangun / membuat",
+    "type": "VERB",
+    "v2": "built",
+    "v3": "built",
+    "v_ing": "building",
+    "example": "They are building a new school."
+  },
+  {
+    "word": "buy",
+    "translation": "membeli",
+    "type": "VERB",
+    "v2": "bought",
+    "v3": "bought",
+    "v_ing": "buying",
+    "example": "I want to buy a new phone."
+  },
+  {
+    "word": "calculate",
+    "translation": "menghitung / kalkulasi",
+    "type": "VERB",
+    "v2": "calculated",
+    "v3": "calculated",
+    "v_ing": "calculating",
+    "example": "Calculate the total expenses."
+  },
+  {
+    "word": "call",
+    "translation": "memanggil / menelepon",
+    "type": "VERB",
+    "v2": "called",
+    "v3": "called",
+    "v_ing": "calling",
+    "example": "Please call me when you arrive."
+  },
+  {
+    "word": "cancel",
+    "translation": "membatalkan",
+    "type": "VERB",
+    "v2": "cancelled",
+    "v3": "cancelled",
+    "v_ing": "cancelling",
+    "example": "They cancelled the event due to rain."
+  },
+  {
+    "word": "capture",
+    "translation": "menangkap / merekam",
+    "type": "VERB",
+    "v2": "captured",
+    "v3": "captured",
+    "v_ing": "capturing",
+    "example": "The photographer captured a perfect moment."
+  },
+  {
+    "word": "change",
+    "translation": "mengubah / berubah",
+    "type": "VERB",
+    "v2": "changed",
+    "v3": "changed",
+    "v_ing": "changing",
+    "example": "People change over time."
+  },
+  {
+    "word": "choose",
+    "translation": "memilih",
+    "type": "VERB",
+    "v2": "chose",
+    "v3": "chosen",
+    "v_ing": "choosing",
+    "example": "Choose the best option available."
+  },
+  {
+    "word": "collect",
+    "translation": "mengumpulkan / koleksi",
+    "type": "VERB",
+    "v2": "collected",
+    "v3": "collected",
+    "v_ing": "collecting",
+    "example": "He collects stamps as a hobby."
+  },
+  {
+    "word": "communicate",
+    "translation": "berkomunikasi",
+    "type": "VERB",
+    "v2": "communicated",
+    "v3": "communicated",
+    "v_ing": "communicating",
+    "example": "It is important to communicate clearly."
+  },
+  {
+    "word": "compare",
+    "translation": "membandingkan",
+    "type": "VERB",
+    "v2": "compared",
+    "v3": "compared",
+    "v_ing": "comparing",
+    "example": "Compare the prices before you buy."
+  },
+  {
+    "word": "complete",
+    "translation": "menyelesaikan / melengkapi",
+    "type": "VERB",
+    "v2": "completed",
+    "v3": "completed",
+    "v_ing": "completing",
+    "example": "She completed the assignment on time."
+  },
+  {
+    "word": "confirm",
+    "translation": "mengkonfirmasi / memastikan",
+    "type": "VERB",
+    "v2": "confirmed",
+    "v3": "confirmed",
+    "v_ing": "confirming",
+    "example": "Please confirm your booking."
+  },
+  {
+    "word": "connect",
+    "translation": "menghubungkan / terhubung",
+    "type": "VERB",
+    "v2": "connected",
+    "v3": "connected",
+    "v_ing": "connecting",
+    "example": "Connect the cable to the device."
+  },
+  {
+    "word": "consider",
+    "translation": "mempertimbangkan",
+    "type": "VERB",
+    "v2": "considered",
+    "v3": "considered",
+    "v_ing": "considering",
+    "example": "Consider all options before deciding."
+  },
+  {
+    "word": "control",
+    "translation": "mengontrol / mengendalikan",
+    "type": "VERB",
+    "v2": "controlled",
+    "v3": "controlled",
+    "v_ing": "controlling",
+    "example": "Stay calm and control your emotions."
+  },
+  {
+    "word": "create",
+    "translation": "menciptakan / membuat",
+    "type": "VERB",
+    "v2": "created",
+    "v3": "created",
+    "v_ing": "creating",
+    "example": "She created a beautiful painting."
+  },
+  {
+    "word": "decide",
+    "translation": "memutuskan",
+    "type": "VERB",
+    "v2": "decided",
+    "v3": "decided",
+    "v_ing": "deciding",
+    "example": "I decided to go on a trip."
+  },
+  {
+    "word": "deliver",
+    "translation": "mengantarkan / menyampaikan",
+    "type": "VERB",
+    "v2": "delivered",
+    "v3": "delivered",
+    "v_ing": "delivering",
+    "example": "The package was delivered yesterday."
+  },
+  {
+    "word": "describe",
+    "translation": "menggambarkan / mendeskripsikan",
+    "type": "VERB",
+    "v2": "described",
+    "v3": "described",
+    "v_ing": "describing",
+    "example": "Can you describe what happened?"
+  },
+  {
+    "word": "develop",
+    "translation": "mengembangkan",
+    "type": "VERB",
+    "v2": "developed",
+    "v3": "developed",
+    "v_ing": "developing",
+    "example": "The team is developing a new app."
+  },
+  {
+    "word": "discover",
+    "translation": "menemukan / mencari tahu",
+    "type": "VERB",
+    "v2": "discovered",
+    "v3": "discovered",
+    "v_ing": "discovering",
+    "example": "Scientists discovered a new species."
+  },
+  {
+    "word": "discuss",
+    "translation": "mendiskusikan / membahas",
+    "type": "VERB",
+    "v2": "discussed",
+    "v3": "discussed",
+    "v_ing": "discussing",
+    "example": "We discussed the plan for tomorrow."
+  },
+  {
+    "word": "do",
+    "translation": "melakukan / mengerjakan",
+    "type": "VERB",
+    "v2": "did",
+    "v3": "done",
+    "v_ing": "doing",
+    "example": "What are you doing?"
+  },
+  {
+    "word": "draw",
+    "translation": "menggambar / menarik",
+    "type": "VERB",
+    "v2": "drew",
+    "v3": "drawn",
+    "v_ing": "drawing",
+    "example": "She drew a picture of a cat."
+  },
+  {
+    "word": "drive",
+    "translation": "mengemudi / mendorong",
+    "type": "VERB",
+    "v2": "drove",
+    "v3": "driven",
+    "v_ing": "driving",
+    "example": "He drives to work every day."
+  },
+  {
+    "word": "earn",
+    "translation": "menghasilkan / mendapatkan",
+    "type": "VERB",
+    "v2": "earned",
+    "v3": "earned",
+    "v_ing": "earning",
+    "example": "She earns a good salary."
+  },
+  {
+    "word": "eat",
+    "translation": "makan",
+    "type": "VERB",
+    "v2": "ate",
+    "v3": "eaten",
+    "v_ing": "eating",
+    "example": "We eat dinner at 7 PM."
+  },
+  {
+    "word": "eliminate",
+    "translation": "menghilangkan / mengeliminasi",
+    "type": "VERB",
+    "v2": "eliminated",
+    "v3": "eliminated",
+    "v_ing": "eliminating",
+    "example": "We need to eliminate the bugs in the code."
+  },
+  {
+    "word": "encourage",
+    "translation": "mendorong / memberi semangat",
+    "type": "VERB",
+    "v2": "encouraged",
+    "v3": "encouraged",
+    "v_ing": "encouraging",
+    "example": "She encouraged him to keep trying."
+  },
+  {
+    "word": "establish",
+    "translation": "mendirikan / menetapkan",
+    "type": "VERB",
+    "v2": "established",
+    "v3": "established",
+    "v_ing": "establishing",
+    "example": "They established a new company."
+  },
+  {
+    "word": "evaluate",
+    "translation": "mengevaluasi / menilai",
+    "type": "VERB",
+    "v2": "evaluated",
+    "v3": "evaluated",
+    "v_ing": "evaluating",
+    "example": "The manager evaluated the team performance."
+  },
+  {
+    "word": "expand",
+    "translation": "memperluas / berkembang",
+    "type": "VERB",
+    "v2": "expanded",
+    "v3": "expanded",
+    "v_ing": "expanding",
+    "example": "The business is expanding rapidly."
+  },
+  {
+    "word": "explain",
+    "translation": "menjelaskan",
+    "type": "VERB",
+    "v2": "explained",
+    "v3": "explained",
+    "v_ing": "explaining",
+    "example": "Can you explain this concept?"
+  },
+  {
+    "word": "fail",
+    "translation": "gagal / tidak berhasil",
+    "type": "VERB",
+    "v2": "failed",
+    "v3": "failed",
+    "v_ing": "failing",
+    "example": "He failed the exam, but tried again."
+  },
+  {
+    "word": "find",
+    "translation": "menemukan / mencari",
+    "type": "VERB",
+    "v2": "found",
+    "v3": "found",
+    "v_ing": "finding",
+    "example": "I cannot find my keys."
+  },
+  {
+    "word": "finish",
+    "translation": "menyelesaikan / selesai",
+    "type": "VERB",
+    "v2": "finished",
+    "v3": "finished",
+    "v_ing": "finishing",
+    "example": "Have you finished your homework?"
+  },
+  {
+    "word": "follow",
+    "translation": "mengikuti / mengikut",
+    "type": "VERB",
+    "v2": "followed",
+    "v3": "followed",
+    "v_ing": "following",
+    "example": "Follow the instructions carefully."
+  },
+  {
+    "word": "gain",
+    "translation": "mendapatkan / meraih",
+    "type": "VERB",
+    "v2": "gained",
+    "v3": "gained",
+    "v_ing": "gaining",
+    "example": "She gained a lot of experience."
+  },
+  {
+    "word": "generate",
+    "translation": "menghasilkan / membuat",
+    "type": "VERB",
+    "v2": "generated",
+    "v3": "generated",
+    "v_ing": "generating",
+    "example": "Solar panels generate electricity."
+  },
+  {
+    "word": "give",
+    "translation": "memberi / memberikan",
+    "type": "VERB",
+    "v2": "gave",
+    "v3": "given",
+    "v_ing": "giving",
+    "example": "She gave me a gift."
+  },
+  {
+    "word": "go",
+    "translation": "pergi / berangkat",
+    "type": "VERB",
+    "v2": "went",
+    "v3": "gone",
+    "v_ing": "going",
+    "example": "Let's go to the market."
+  },
+  {
+    "word": "grow",
+    "translation": "tumbuh / berkembang",
+    "type": "VERB",
+    "v2": "grew",
+    "v3": "grown",
+    "v_ing": "growing",
+    "example": "The company grew 20% this year."
+  },
+  {
+    "word": "handle",
+    "translation": "menangani / mengelola",
+    "type": "VERB",
+    "v2": "handled",
+    "v3": "handled",
+    "v_ing": "handling",
+    "example": "She knows how to handle difficult situations."
+  },
+  {
+    "word": "happen",
+    "translation": "terjadi / berlangsung",
+    "type": "VERB",
+    "v2": "happened",
+    "v3": "happened",
+    "v_ing": "happening",
+    "example": "What happened here?"
+  },
+  {
+    "word": "have",
+    "translation": "memiliki / mempunyai",
+    "type": "VERB",
+    "v2": "had",
+    "v3": "had",
+    "v_ing": "having",
+    "example": "I have two brothers."
+  },
+  {
+    "word": "help",
+    "translation": "membantu / menolong",
+    "type": "VERB",
+    "v2": "helped",
+    "v3": "helped",
+    "v_ing": "helping",
+    "example": "Can you help me with this?"
+  },
+  {
+    "word": "identify",
+    "translation": "mengidentifikasi / mengenali",
+    "type": "VERB",
+    "v2": "identified",
+    "v3": "identified",
+    "v_ing": "identifying",
+    "example": "Can you identify the problem?"
+  },
+  {
+    "word": "implement",
+    "translation": "mengimplementasikan / menerapkan",
+    "type": "VERB",
+    "v2": "implemented",
+    "v3": "implemented",
+    "v_ing": "implementing",
+    "example": "We will implement the new policy next month."
+  },
+  {
+    "word": "improve",
+    "translation": "meningkatkan / memperbaiki",
+    "type": "VERB",
+    "v2": "improved",
+    "v3": "improved",
+    "v_ing": "improving",
+    "example": "You must improve your English skills."
+  },
+  {
+    "word": "include",
+    "translation": "termasuk / menyertakan",
+    "type": "VERB",
+    "v2": "included",
+    "v3": "included",
+    "v_ing": "including",
+    "example": "The price includes breakfast."
+  },
+  {
+    "word": "increase",
+    "translation": "meningkatkan / bertambah",
+    "type": "VERB",
+    "v2": "increased",
+    "v3": "increased",
+    "v_ing": "increasing",
+    "example": "Sales have increased by 30%."
+  },
+  {
+    "word": "influence",
+    "translation": "mempengaruhi / memengaruhi",
+    "type": "VERB",
+    "v2": "influenced",
+    "v3": "influenced",
+    "v_ing": "influencing",
+    "example": "Music influences our mood."
+  },
+  {
+    "word": "invest",
+    "translation": "berinvestasi / menanamkan modal",
+    "type": "VERB",
+    "v2": "invested",
+    "v3": "invested",
+    "v_ing": "investing",
+    "example": "He invested in stocks."
+  },
+  {
+    "word": "join",
+    "translation": "bergabung / ikut",
+    "type": "VERB",
+    "v2": "joined",
+    "v3": "joined",
+    "v_ing": "joining",
+    "example": "She joined the team last month."
+  },
+  {
+    "word": "know",
+    "translation": "tahu / mengetahui",
+    "type": "VERB",
+    "v2": "knew",
+    "v3": "known",
+    "v_ing": "knowing",
+    "example": "Do you know the answer?"
+  },
+  {
+    "word": "lead",
+    "translation": "memimpin / mengarahkan",
+    "type": "VERB",
+    "v2": "led",
+    "v3": "led",
+    "v_ing": "leading",
+    "example": "She leads the marketing team."
+  },
+  {
+    "word": "learn",
+    "translation": "belajar / mempelajari",
+    "type": "VERB",
+    "v2": "learned",
+    "v3": "learned",
+    "v_ing": "learning",
+    "example": "I am learning to speak Japanese."
+  },
+  {
+    "word": "listen",
+    "translation": "mendengarkan",
+    "type": "VERB",
+    "v2": "listened",
+    "v3": "listened",
+    "v_ing": "listening",
+    "example": "Listen carefully to the instructions."
+  },
+  {
+    "word": "live",
+    "translation": "hidup / tinggal",
+    "type": "VERB",
+    "v2": "lived",
+    "v3": "lived",
+    "v_ing": "living",
+    "example": "She lives in Jakarta."
+  },
+  {
+    "word": "make",
+    "translation": "membuat / menjadikan",
+    "type": "VERB",
+    "v2": "made",
+    "v3": "made",
+    "v_ing": "making",
+    "example": "He makes good coffee."
+  },
+  {
+    "word": "manage",
+    "translation": "mengelola / mengatur",
+    "type": "VERB",
+    "v2": "managed",
+    "v3": "managed",
+    "v_ing": "managing",
+    "example": "She manages a team of 10 people."
+  },
+  {
+    "word": "measure",
+    "translation": "mengukur / memperkirakan",
+    "type": "VERB",
+    "v2": "measured",
+    "v3": "measured",
+    "v_ing": "measuring",
+    "example": "Measure the distance carefully."
+  },
+  {
+    "word": "meet",
+    "translation": "bertemu / memenuhi",
+    "type": "VERB",
+    "v2": "met",
+    "v3": "met",
+    "v_ing": "meeting",
+    "example": "Nice to meet you."
+  },
+  {
+    "word": "motivate",
+    "translation": "memotivasi / mendorong",
+    "type": "VERB",
+    "v2": "motivated",
+    "v3": "motivated",
+    "v_ing": "motivating",
+    "example": "She motivates her team every day."
+  },
+  {
+    "word": "move",
+    "translation": "bergerak / pindah",
+    "type": "VERB",
+    "v2": "moved",
+    "v3": "moved",
+    "v_ing": "moving",
+    "example": "We moved to a new city."
+  },
+  {
+    "word": "negotiate",
+    "translation": "bernegosiasi / berunding",
+    "type": "VERB",
+    "v2": "negotiated",
+    "v3": "negotiated",
+    "v_ing": "negotiating",
+    "example": "They negotiated a better deal."
+  },
+  {
+    "word": "observe",
+    "translation": "mengamati / mengobservasi",
+    "type": "VERB",
+    "v2": "observed",
+    "v3": "observed",
+    "v_ing": "observing",
+    "example": "Observe the changes carefully."
+  },
+  {
+    "word": "open",
+    "translation": "membuka / terbuka",
+    "type": "VERB",
+    "v2": "opened",
+    "v3": "opened",
+    "v_ing": "opening",
+    "example": "Open the door, please."
+  },
+  {
+    "word": "organize",
+    "translation": "mengorganisir / menata",
+    "type": "VERB",
+    "v2": "organized",
+    "v3": "organized",
+    "v_ing": "organizing",
+    "example": "She organized the event perfectly."
+  },
+  {
+    "word": "perform",
+    "translation": "tampil / melakukan",
+    "type": "VERB",
+    "v2": "performed",
+    "v3": "performed",
+    "v_ing": "performing",
+    "example": "The band performed last night."
+  },
+  {
+    "word": "plan",
+    "translation": "merencanakan / rencana",
+    "type": "VERB",
+    "v2": "planned",
+    "v3": "planned",
+    "v_ing": "planning",
+    "example": "We are planning a trip."
+  },
+  {
+    "word": "practice",
+    "translation": "berlatih / mempraktikkan",
+    "type": "VERB",
+    "v2": "practiced",
+    "v3": "practiced",
+    "v_ing": "practicing",
+    "example": "Practice makes perfect."
+  },
+  {
+    "word": "prepare",
+    "translation": "mempersiapkan / menyiapkan",
+    "type": "VERB",
+    "v2": "prepared",
+    "v3": "prepared",
+    "v_ing": "preparing",
+    "example": "She prepared a great meal."
+  },
+  {
+    "word": "present",
+    "translation": "mempresentasikan / menyajikan",
+    "type": "VERB",
+    "v2": "presented",
+    "v3": "presented",
+    "v_ing": "presenting",
+    "example": "He presented his findings to the board."
+  },
+  {
+    "word": "provide",
+    "translation": "menyediakan / memberikan",
+    "type": "VERB",
+    "v2": "provided",
+    "v3": "provided",
+    "v_ing": "providing",
+    "example": "The company provides free meals."
+  },
+  {
+    "word": "read",
+    "translation": "membaca",
+    "type": "VERB",
+    "v2": "read",
+    "v3": "read",
+    "v_ing": "reading",
+    "example": "I read a book every week."
+  },
+  {
+    "word": "receive",
+    "translation": "menerima / mendapatkan",
+    "type": "VERB",
+    "v2": "received",
+    "v3": "received",
+    "v_ing": "receiving",
+    "example": "I received a letter today."
+  },
+  {
+    "word": "reduce",
+    "translation": "mengurangi / mereduksi",
+    "type": "VERB",
+    "v2": "reduced",
+    "v3": "reduced",
+    "v_ing": "reducing",
+    "example": "We need to reduce costs."
+  },
+  {
+    "word": "remember",
+    "translation": "mengingat / ingat",
+    "type": "VERB",
+    "v2": "remembered",
+    "v3": "remembered",
+    "v_ing": "remembering",
+    "example": "I cannot remember his name."
+  },
+  {
+    "word": "report",
+    "translation": "melaporkan / laporan",
+    "type": "VERB",
+    "v2": "reported",
+    "v3": "reported",
+    "v_ing": "reporting",
+    "example": "Report any suspicious activity."
+  },
+  {
+    "word": "require",
+    "translation": "memerlukan / membutuhkan",
+    "type": "VERB",
+    "v2": "required",
+    "v3": "required",
+    "v_ing": "requiring",
+    "example": "The job requires experience."
+  },
+  {
+    "word": "resolve",
+    "translation": "menyelesaikan / memecahkan",
+    "type": "VERB",
+    "v2": "resolved",
+    "v3": "resolved",
+    "v_ing": "resolving",
+    "example": "We resolved the issue quickly."
+  },
+  {
+    "word": "run",
+    "translation": "berlari / menjalankan",
+    "type": "VERB",
+    "v2": "ran",
+    "v3": "run",
+    "v_ing": "running",
+    "example": "She runs 5 km every morning."
+  },
+  {
+    "word": "save",
+    "translation": "menabung / menyimpan",
+    "type": "VERB",
+    "v2": "saved",
+    "v3": "saved",
+    "v_ing": "saving",
+    "example": "Save your work regularly."
+  },
+  {
+    "word": "search",
+    "translation": "mencari / menelusuri",
+    "type": "VERB",
+    "v2": "searched",
+    "v3": "searched",
+    "v_ing": "searching",
+    "example": "I searched for the answer online."
+  },
+  {
+    "word": "see",
+    "translation": "melihat / memahami",
+    "type": "VERB",
+    "v2": "saw",
+    "v3": "seen",
+    "v_ing": "seeing",
+    "example": "I can see the mountain from here."
+  },
+  {
+    "word": "send",
+    "translation": "mengirim / mengantarkan",
+    "type": "VERB",
+    "v2": "sent",
+    "v3": "sent",
+    "v_ing": "sending",
+    "example": "Send me the report by email."
+  },
+  {
+    "word": "share",
+    "translation": "berbagi / membagikan",
+    "type": "VERB",
+    "v2": "shared",
+    "v3": "shared",
+    "v_ing": "sharing",
+    "example": "Share your experience with others."
+  },
+  {
+    "word": "solve",
+    "translation": "memecahkan / menyelesaikan",
+    "type": "VERB",
+    "v2": "solved",
+    "v3": "solved",
+    "v_ing": "solving",
+    "example": "Can you solve this equation?"
+  },
+  {
+    "word": "speak",
+    "translation": "berbicara / berkata",
+    "type": "VERB",
+    "v2": "spoke",
+    "v3": "spoken",
+    "v_ing": "speaking",
+    "example": "She speaks three languages."
+  },
+  {
+    "word": "start",
+    "translation": "memulai / mulai",
+    "type": "VERB",
+    "v2": "started",
+    "v3": "started",
+    "v_ing": "starting",
+    "example": "Let's start the meeting."
+  },
+  {
+    "word": "study",
+    "translation": "belajar / mempelajari",
+    "type": "VERB",
+    "v2": "studied",
+    "v3": "studied",
+    "v_ing": "studying",
+    "example": "He studies medicine at the university."
+  },
+  {
+    "word": "suggest",
+    "translation": "menyarankan / mengusulkan",
+    "type": "VERB",
+    "v2": "suggested",
+    "v3": "suggested",
+    "v_ing": "suggesting",
+    "example": "I suggest we take a break."
+  },
+  {
+    "word": "support",
+    "translation": "mendukung / menopang",
+    "type": "VERB",
+    "v2": "supported",
+    "v3": "supported",
+    "v_ing": "supporting",
+    "example": "Your family will always support you."
+  },
+  {
+    "word": "take",
+    "translation": "mengambil / membawa",
+    "type": "VERB",
+    "v2": "took",
+    "v3": "taken",
+    "v_ing": "taking",
+    "example": "Take a deep breath."
+  },
+  {
+    "word": "talk",
+    "translation": "berbicara / ngobrol",
+    "type": "VERB",
+    "v2": "talked",
+    "v3": "talked",
+    "v_ing": "talking",
+    "example": "We talked for hours."
+  },
+  {
+    "word": "think",
+    "translation": "berpikir / menganggap",
+    "type": "VERB",
+    "v2": "thought",
+    "v3": "thought",
+    "v_ing": "thinking",
+    "example": "Think before you speak."
+  },
+  {
+    "word": "travel",
+    "translation": "bepergian / melakukan perjalanan",
+    "type": "VERB",
+    "v2": "traveled",
+    "v3": "traveled",
+    "v_ing": "traveling",
+    "example": "She loves to travel the world."
+  },
+  {
+    "word": "try",
+    "translation": "mencoba / berusaha",
+    "type": "VERB",
+    "v2": "tried",
+    "v3": "tried",
+    "v_ing": "trying",
+    "example": "Try your best in everything."
+  },
+  {
+    "word": "understand",
+    "translation": "memahami / mengerti",
+    "type": "VERB",
+    "v2": "understood",
+    "v3": "understood",
+    "v_ing": "understanding",
+    "example": "Do you understand the instructions?"
+  },
+  {
+    "word": "update",
+    "translation": "memperbarui / mengupdate",
+    "type": "VERB",
+    "v2": "updated",
+    "v3": "updated",
+    "v_ing": "updating",
+    "example": "Update the software to the latest version."
+  },
+  {
+    "word": "use",
+    "translation": "menggunakan / memakai",
+    "type": "VERB",
+    "v2": "used",
+    "v3": "used",
+    "v_ing": "using",
+    "example": "Use a pencil to write."
+  },
+  {
+    "word": "wait",
+    "translation": "menunggu",
+    "type": "VERB",
+    "v2": "waited",
+    "v3": "waited",
+    "v_ing": "waiting",
+    "example": "Please wait a moment."
+  },
+  {
+    "word": "want",
+    "translation": "ingin / menginginkan",
+    "type": "VERB",
+    "v2": "wanted",
+    "v3": "wanted",
+    "v_ing": "wanting",
+    "example": "I want to be a software engineer."
+  },
+  {
+    "word": "work",
+    "translation": "bekerja / berfungsi",
+    "type": "VERB",
+    "v2": "worked",
+    "v3": "worked",
+    "v_ing": "working",
+    "example": "She works hard every day."
+  },
+  {
+    "word": "write",
+    "translation": "menulis",
+    "type": "VERB",
+    "v2": "wrote",
+    "v3": "written",
+    "v_ing": "writing",
+    "example": "Write a summary of the article."
+  },
+  {
+    "word": "ability",
+    "translation": "kemampuan / kecakapan",
+    "type": "NOUN",
+    "example": "She has the ability to solve complex problems."
+  },
+  {
+    "word": "achievement",
+    "translation": "pencapaian / prestasi",
+    "type": "NOUN",
+    "example": "Winning the championship is a great achievement."
+  },
+  {
+    "word": "advantage",
+    "translation": "keuntungan / kelebihan",
+    "type": "NOUN",
+    "example": "The advantage of living here is the fresh air."
+  },
+  {
+    "word": "adventure",
+    "translation": "petualangan",
+    "type": "NOUN",
+    "example": "Life is a great adventure."
+  },
+  {
+    "word": "advice",
+    "translation": "saran / nasihat",
+    "type": "NOUN",
+    "example": "Her advice was very helpful."
+  },
+  {
+    "word": "ambition",
+    "translation": "ambisi / cita-cita",
+    "type": "NOUN",
+    "example": "His ambition is to become a doctor."
+  },
+  {
+    "word": "analysis",
+    "translation": "analisis / penguraian",
+    "type": "NOUN",
+    "example": "The analysis showed positive results."
+  },
+  {
+    "word": "approach",
+    "translation": "pendekatan / cara",
+    "type": "NOUN",
+    "example": "We need a different approach to this problem."
+  },
+  {
+    "word": "attitude",
+    "translation": "sikap / perilaku",
+    "type": "NOUN",
+    "example": "A positive attitude leads to success."
+  },
+  {
+    "word": "budget",
+    "translation": "anggaran / dana",
+    "type": "NOUN",
+    "example": "We have a limited budget this year."
+  },
+  {
+    "word": "career",
+    "translation": "karier / pekerjaan",
+    "type": "NOUN",
+    "example": "She has a successful career in medicine."
+  },
+  {
+    "word": "challenge",
+    "translation": "tantangan / rintangan",
+    "type": "NOUN",
+    "example": "Learning a new language is a great challenge."
+  },
+  {
+    "word": "change",
+    "translation": "perubahan",
+    "type": "NOUN",
+    "example": "Change is inevitable."
+  },
+  {
+    "word": "character",
+    "translation": "karakter / sifat",
+    "type": "NOUN",
+    "example": "A person's character is built over time."
+  },
+  {
+    "word": "choice",
+    "translation": "pilihan / opsi",
+    "type": "NOUN",
+    "example": "You have to make the right choice."
+  },
+  {
+    "word": "communication",
+    "translation": "komunikasi",
+    "type": "NOUN",
+    "example": "Good communication is key in a relationship."
+  },
+  {
+    "word": "community",
+    "translation": "komunitas / masyarakat",
+    "type": "NOUN",
+    "example": "She is very involved in her local community."
+  },
+  {
+    "word": "competition",
+    "translation": "kompetisi / persaingan",
+    "type": "NOUN",
+    "example": "The competition was very intense."
+  },
+  {
+    "word": "confidence",
+    "translation": "kepercayaan diri / keyakinan",
+    "type": "NOUN",
+    "example": "She spoke with great confidence."
+  },
+  {
+    "word": "connection",
+    "translation": "koneksi / hubungan",
+    "type": "NOUN",
+    "example": "A strong internet connection is needed."
+  },
+  {
+    "word": "consequence",
+    "translation": "konsekuensi / akibat",
+    "type": "NOUN",
+    "example": "Think about the consequences of your actions."
+  },
+  {
+    "word": "creativity",
+    "translation": "kreativitas",
+    "type": "NOUN",
+    "example": "Creativity is essential in design."
+  },
+  {
+    "word": "culture",
+    "translation": "budaya / kultur",
+    "type": "NOUN",
+    "example": "Indonesia has a rich and diverse culture."
+  },
+  {
+    "word": "deadline",
+    "translation": "batas waktu / tenggat",
+    "type": "NOUN",
+    "example": "The deadline for the project is Friday."
+  },
+  {
+    "word": "decision",
+    "translation": "keputusan",
+    "type": "NOUN",
+    "example": "Making the right decision is important."
+  },
+  {
+    "word": "development",
+    "translation": "perkembangan / pembangunan",
+    "type": "NOUN",
+    "example": "Child development is a fascinating topic."
+  },
+  {
+    "word": "difference",
+    "translation": "perbedaan / selisih",
+    "type": "NOUN",
+    "example": "There is a big difference between the two."
+  },
+  {
+    "word": "discipline",
+    "translation": "disiplin / ilmu",
+    "type": "NOUN",
+    "example": "Success requires discipline."
+  },
+  {
+    "word": "economy",
+    "translation": "ekonomi / perekonomian",
+    "type": "NOUN",
+    "example": "The global economy is slowly recovering."
+  },
+  {
+    "word": "education",
+    "translation": "pendidikan",
+    "type": "NOUN",
+    "example": "Education is the key to a better future."
+  },
+  {
+    "word": "effort",
+    "translation": "usaha / upaya",
+    "type": "NOUN",
+    "example": "Success requires a lot of effort."
+  },
+  {
+    "word": "environment",
+    "translation": "lingkungan / alam",
+    "type": "NOUN",
+    "example": "We must protect our environment."
+  },
+  {
+    "word": "evidence",
+    "translation": "bukti / keterangan",
+    "type": "NOUN",
+    "example": "The police found clear evidence."
+  },
+  {
+    "word": "experience",
+    "translation": "pengalaman",
+    "type": "NOUN",
+    "example": "I have five years of experience in marketing."
+  },
+  {
+    "word": "failure",
+    "translation": "kegagalan",
+    "type": "NOUN",
+    "example": "Failure is the best teacher."
+  },
+  {
+    "word": "finance",
+    "translation": "keuangan / finansial",
+    "type": "NOUN",
+    "example": "Managing personal finance is important."
+  },
+  {
+    "word": "freedom",
+    "translation": "kebebasan / kemerdekaan",
+    "type": "NOUN",
+    "example": "Everyone deserves freedom of speech."
+  },
+  {
+    "word": "goal",
+    "translation": "tujuan / sasaran",
+    "type": "NOUN",
+    "example": "Set a clear goal and work towards it."
+  },
+  {
+    "word": "growth",
+    "translation": "pertumbuhan / perkembangan",
+    "type": "NOUN",
+    "example": "Personal growth takes time."
+  },
+  {
+    "word": "habit",
+    "translation": "kebiasaan",
+    "type": "NOUN",
+    "example": "Reading is a great habit."
+  },
+  {
+    "word": "health",
+    "translation": "kesehatan",
+    "type": "NOUN",
+    "example": "Health is more important than wealth."
+  },
+  {
+    "word": "impact",
+    "translation": "dampak / pengaruh",
+    "type": "NOUN",
+    "example": "The decision had a major impact on the team."
+  },
+  {
+    "word": "income",
+    "translation": "pendapatan / penghasilan",
+    "type": "NOUN",
+    "example": "Her income doubled after the promotion."
+  },
+  {
+    "word": "information",
+    "translation": "informasi / keterangan",
+    "type": "NOUN",
+    "example": "Please provide accurate information."
+  },
+  {
+    "word": "innovation",
+    "translation": "inovasi / pembaruan",
+    "type": "NOUN",
+    "example": "Innovation drives economic growth."
+  },
+  {
+    "word": "investment",
+    "translation": "investasi",
+    "type": "NOUN",
+    "example": "Real estate is a good investment."
+  },
+  {
+    "word": "journey",
+    "translation": "perjalanan",
+    "type": "NOUN",
+    "example": "Life is a beautiful journey."
+  },
+  {
+    "word": "knowledge",
+    "translation": "pengetahuan / ilmu",
+    "type": "NOUN",
+    "example": "Knowledge is power."
+  },
+  {
+    "word": "language",
+    "translation": "bahasa",
+    "type": "NOUN",
+    "example": "She speaks four languages fluently."
+  },
+  {
+    "word": "leadership",
+    "translation": "kepemimpinan",
+    "type": "NOUN",
+    "example": "Strong leadership is crucial for a team."
+  },
+  {
+    "word": "lifestyle",
+    "translation": "gaya hidup",
+    "type": "NOUN",
+    "example": "A healthy lifestyle improves your well-being."
+  },
+  {
+    "word": "motivation",
+    "translation": "motivasi / dorongan",
+    "type": "NOUN",
+    "example": "She has a strong motivation to succeed."
+  },
+  {
+    "word": "network",
+    "translation": "jaringan / koneksi",
+    "type": "NOUN",
+    "example": "Building a professional network is important."
+  },
+  {
+    "word": "opportunity",
+    "translation": "kesempatan / peluang",
+    "type": "NOUN",
+    "example": "Don't miss this great opportunity."
+  },
+  {
+    "word": "performance",
+    "translation": "kinerja / performa",
+    "type": "NOUN",
+    "example": "The team's performance improved significantly."
+  },
+  {
+    "word": "perspective",
+    "translation": "perspektif / sudut pandang",
+    "type": "NOUN",
+    "example": "Try to see things from a different perspective."
+  },
+  {
+    "word": "principle",
+    "translation": "prinsip / asas",
+    "type": "NOUN",
+    "example": "He lives by strong principles."
+  },
+  {
+    "word": "priority",
+    "translation": "prioritas / hal utama",
+    "type": "NOUN",
+    "example": "Family is my first priority."
+  },
+  {
+    "word": "problem",
+    "translation": "masalah / persoalan",
+    "type": "NOUN",
+    "example": "We found a solution to the problem."
+  },
+  {
+    "word": "process",
+    "translation": "proses / prosedur",
+    "type": "NOUN",
+    "example": "The hiring process takes two weeks."
+  },
+  {
+    "word": "progress",
+    "translation": "kemajuan / perkembangan",
+    "type": "NOUN",
+    "example": "We are making good progress."
+  },
+  {
+    "word": "purpose",
+    "translation": "tujuan / maksud",
+    "type": "NOUN",
+    "example": "Everyone needs a sense of purpose."
+  },
+  {
+    "word": "relationship",
+    "translation": "hubungan / relasi",
+    "type": "NOUN",
+    "example": "A healthy relationship requires trust."
+  },
+  {
+    "word": "responsibility",
+    "translation": "tanggung jawab",
+    "type": "NOUN",
+    "example": "Take responsibility for your actions."
+  },
+  {
+    "word": "result",
+    "translation": "hasil / hasil akhir",
+    "type": "NOUN",
+    "example": "Hard work produces great results."
+  },
+  {
+    "word": "risk",
+    "translation": "risiko / bahaya",
+    "type": "NOUN",
+    "example": "Every investment carries some risk."
+  },
+  {
+    "word": "skill",
+    "translation": "keterampilan / keahlian",
+    "type": "NOUN",
+    "example": "Communication is a key skill."
+  },
+  {
+    "word": "solution",
+    "translation": "solusi / penyelesaian",
+    "type": "NOUN",
+    "example": "We need a practical solution."
+  },
+  {
+    "word": "strategy",
+    "translation": "strategi / rencana",
+    "type": "NOUN",
+    "example": "We need a new marketing strategy."
+  },
+  {
+    "word": "strength",
+    "translation": "kekuatan / kelebihan",
+    "type": "NOUN",
+    "example": "What is your greatest strength?"
+  },
+  {
+    "word": "success",
+    "translation": "kesuksesan / keberhasilan",
+    "type": "NOUN",
+    "example": "Success is the result of hard work."
+  },
+  {
+    "word": "system",
+    "translation": "sistem / tatanan",
+    "type": "NOUN",
+    "example": "The system needs an upgrade."
+  },
+  {
+    "word": "teamwork",
+    "translation": "kerja sama tim",
+    "type": "NOUN",
+    "example": "Great teamwork leads to great results."
+  },
+  {
+    "word": "technology",
+    "translation": "teknologi",
+    "type": "NOUN",
+    "example": "Technology changes our way of life."
+  },
+  {
+    "word": "trust",
+    "translation": "kepercayaan / keyakinan",
+    "type": "NOUN",
+    "example": "Trust is the foundation of any relationship."
+  },
+  {
+    "word": "value",
+    "translation": "nilai / harga",
+    "type": "NOUN",
+    "example": "Education has great value in life."
+  },
+  {
+    "word": "vision",
+    "translation": "visi / pandangan",
+    "type": "NOUN",
+    "example": "A leader must have a clear vision."
+  },
+  {
+    "word": "weakness",
+    "translation": "kelemahan / kekurangan",
+    "type": "NOUN",
+    "example": "Knowing your weakness helps you improve."
+  },
+  {
+    "word": "absolute",
+    "translation": "mutlak / absolut",
+    "type": "ADJECTIVE",
+    "example": "This is an absolute necessity."
+  },
+  {
+    "word": "accurate",
+    "translation": "akurat / tepat",
+    "type": "ADJECTIVE",
+    "example": "The weather forecast was accurate."
+  },
+  {
+    "word": "active",
+    "translation": "aktif / giat",
+    "type": "ADJECTIVE",
+    "example": "She lives an active lifestyle."
+  },
+  {
+    "word": "actual",
+    "translation": "sebenarnya / nyata",
+    "type": "ADJECTIVE",
+    "example": "What is the actual cost?"
+  },
+  {
+    "word": "amazing",
+    "translation": "luar biasa / menakjubkan",
+    "type": "ADJECTIVE",
+    "example": "The view from the top is amazing."
+  },
+  {
+    "word": "ambitious",
+    "translation": "ambisius / bercita-cita",
+    "type": "ADJECTIVE",
+    "example": "She is very ambitious about her career."
+  },
+  {
+    "word": "available",
+    "translation": "tersedia / ada",
+    "type": "ADJECTIVE",
+    "example": "Is the product still available?"
+  },
+  {
+    "word": "brave",
+    "translation": "berani / pemberani",
+    "type": "ADJECTIVE",
+    "example": "You need to be brave to face your fears."
+  },
+  {
+    "word": "bright",
+    "translation": "cerah / cerdas / terang",
+    "type": "ADJECTIVE",
+    "example": "She has a bright future ahead."
+  },
+  {
+    "word": "careful",
+    "translation": "hati-hati / berhati-hati",
+    "type": "ADJECTIVE",
+    "example": "Be careful when driving."
+  },
+  {
+    "word": "clear",
+    "translation": "jelas / bersih / cerah",
+    "type": "ADJECTIVE",
+    "example": "The instructions were very clear."
+  },
+  {
+    "word": "complex",
+    "translation": "kompleks / rumit",
+    "type": "ADJECTIVE",
+    "example": "The problem is very complex."
+  },
+  {
+    "word": "confident",
+    "translation": "percaya diri / yakin",
+    "type": "ADJECTIVE",
+    "example": "She felt confident during the interview."
+  },
+  {
+    "word": "consistent",
+    "translation": "konsisten / tetap",
+    "type": "ADJECTIVE",
+    "example": "Be consistent in your efforts."
+  },
+  {
+    "word": "creative",
+    "translation": "kreatif / inovatif",
+    "type": "ADJECTIVE",
+    "example": "She is a very creative person."
+  },
+  {
+    "word": "critical",
+    "translation": "kritis / penting",
+    "type": "ADJECTIVE",
+    "example": "This is a critical moment."
+  },
+  {
+    "word": "curious",
+    "translation": "penasaran / ingin tahu",
+    "type": "ADJECTIVE",
+    "example": "Children are naturally curious."
+  },
+  {
+    "word": "dedicated",
+    "translation": "berdedikasi / tekun",
+    "type": "ADJECTIVE",
+    "example": "She is a dedicated worker."
+  },
+  {
+    "word": "different",
+    "translation": "berbeda / lain",
+    "type": "ADJECTIVE",
+    "example": "We have different opinions."
+  },
+  {
+    "word": "difficult",
+    "translation": "sulit / susah",
+    "type": "ADJECTIVE",
+    "example": "The exam was very difficult."
+  },
+  {
+    "word": "effective",
+    "translation": "efektif / berhasil",
+    "type": "ADJECTIVE",
+    "example": "This is a very effective method."
+  },
+  {
+    "word": "efficient",
+    "translation": "efisien / hemat",
+    "type": "ADJECTIVE",
+    "example": "The new system is more efficient."
+  },
+  {
+    "word": "essential",
+    "translation": "penting / perlu",
+    "type": "ADJECTIVE",
+    "example": "Water is essential for life."
+  },
+  {
+    "word": "excellent",
+    "translation": "sangat baik / luar biasa",
+    "type": "ADJECTIVE",
+    "example": "She did an excellent job."
+  },
+  {
+    "word": "flexible",
+    "translation": "fleksibel / luwes",
+    "type": "ADJECTIVE",
+    "example": "The schedule is flexible."
+  },
+  {
+    "word": "focused",
+    "translation": "fokus / terpusat",
+    "type": "ADJECTIVE",
+    "example": "Stay focused on your goal."
+  },
+  {
+    "word": "fortunate",
+    "translation": "beruntung / mujur",
+    "type": "ADJECTIVE",
+    "example": "I feel very fortunate to have this opportunity."
+  },
+  {
+    "word": "honest",
+    "translation": "jujur / terus terang",
+    "type": "ADJECTIVE",
+    "example": "Always be honest with your team."
+  },
+  {
+    "word": "humble",
+    "translation": "rendah hati / sederhana",
+    "type": "ADJECTIVE",
+    "example": "Despite his success, he remained humble."
+  },
+  {
+    "word": "independent",
+    "translation": "mandiri / bebas",
+    "type": "ADJECTIVE",
+    "example": "She is very independent."
+  },
+  {
+    "word": "innovative",
+    "translation": "inovatif / kreatif",
+    "type": "ADJECTIVE",
+    "example": "We need an innovative approach."
+  },
+  {
+    "word": "intelligent",
+    "translation": "cerdas / pintar",
+    "type": "ADJECTIVE",
+    "example": "She is a very intelligent student."
+  },
+  {
+    "word": "meaningful",
+    "translation": "bermakna / berarti",
+    "type": "ADJECTIVE",
+    "example": "Live a meaningful life."
+  },
+  {
+    "word": "necessary",
+    "translation": "perlu / diperlukan",
+    "type": "ADJECTIVE",
+    "example": "Is it necessary to bring a bag?"
+  },
+  {
+    "word": "patient",
+    "translation": "sabar / tenang",
+    "type": "ADJECTIVE",
+    "example": "You need to be patient in this situation."
+  },
+  {
+    "word": "persistent",
+    "translation": "gigih / tekun / terus-menerus",
+    "type": "ADJECTIVE",
+    "example": "Be persistent and never give up."
+  },
+  {
+    "word": "positive",
+    "translation": "positif / optimis",
+    "type": "ADJECTIVE",
+    "example": "Keep a positive attitude."
+  },
+  {
+    "word": "practical",
+    "translation": "praktis / realistis",
+    "type": "ADJECTIVE",
+    "example": "We need a practical solution."
+  },
+  {
+    "word": "productive",
+    "translation": "produktif / berdaya guna",
+    "type": "ADJECTIVE",
+    "example": "Have a productive day!"
+  },
+  {
+    "word": "professional",
+    "translation": "profesional / ahli",
+    "type": "ADJECTIVE",
+    "example": "He is a professional engineer."
+  },
+  {
+    "word": "reliable",
+    "translation": "andal / dapat diandalkan",
+    "type": "ADJECTIVE",
+    "example": "She is a reliable friend."
+  },
+  {
+    "word": "relevant",
+    "translation": "relevan / berkaitan",
+    "type": "ADJECTIVE",
+    "example": "Is this information relevant?"
+  },
+  {
+    "word": "responsible",
+    "translation": "bertanggung jawab",
+    "type": "ADJECTIVE",
+    "example": "A responsible person keeps their promises."
+  },
+  {
+    "word": "significant",
+    "translation": "signifikan / penting",
+    "type": "ADJECTIVE",
+    "example": "There is a significant difference."
+  },
+  {
+    "word": "simple",
+    "translation": "sederhana / mudah",
+    "type": "ADJECTIVE",
+    "example": "Keep it simple."
+  },
+  {
+    "word": "specific",
+    "translation": "spesifik / tertentu",
+    "type": "ADJECTIVE",
+    "example": "Be specific in your request."
+  },
+  {
+    "word": "strategic",
+    "translation": "strategis / terencana",
+    "type": "ADJECTIVE",
+    "example": "It was a strategic decision."
+  },
+  {
+    "word": "strong",
+    "translation": "kuat / kencang",
+    "type": "ADJECTIVE",
+    "example": "She has a strong work ethic."
+  },
+  {
+    "word": "successful",
+    "translation": "sukses / berhasil",
+    "type": "ADJECTIVE",
+    "example": "She is a successful entrepreneur."
+  },
+  {
+    "word": "unique",
+    "translation": "unik / khas",
+    "type": "ADJECTIVE",
+    "example": "Everyone has a unique story."
+  },
+  {
+    "word": "valuable",
+    "translation": "berharga / bernilai",
+    "type": "ADJECTIVE",
+    "example": "Her advice is very valuable."
+  },
+  {
+    "word": "actually",
+    "translation": "sebenarnya / nyatanya",
+    "type": "ADVERB",
+    "example": "I actually enjoy public speaking."
+  },
+  {
+    "word": "already",
+    "translation": "sudah / telah",
+    "type": "ADVERB",
+    "example": "I have already eaten."
+  },
+  {
+    "word": "always",
+    "translation": "selalu / senantiasa",
+    "type": "ADVERB",
+    "example": "She always arrives on time."
+  },
+  {
+    "word": "clearly",
+    "translation": "dengan jelas / jelas sekali",
+    "type": "ADVERB",
+    "example": "Please speak clearly."
+  },
+  {
+    "word": "completely",
+    "translation": "sepenuhnya / seluruhnya",
+    "type": "ADVERB",
+    "example": "The task is completely done."
+  },
+  {
+    "word": "currently",
+    "translation": "saat ini / sekarang",
+    "type": "ADVERB",
+    "example": "She is currently studying in London."
+  },
+  {
+    "word": "definitely",
+    "translation": "pasti / tentu saja",
+    "type": "ADVERB",
+    "example": "I will definitely attend the event."
+  },
+  {
+    "word": "effectively",
+    "translation": "secara efektif / dengan baik",
+    "type": "ADVERB",
+    "example": "She communicates effectively."
+  },
+  {
+    "word": "efficiently",
+    "translation": "secara efisien",
+    "type": "ADVERB",
+    "example": "The team worked efficiently."
+  },
+  {
+    "word": "especially",
+    "translation": "terutama / khususnya",
+    "type": "ADVERB",
+    "example": "I love nature, especially forests."
+  },
+  {
+    "word": "eventually",
+    "translation": "akhirnya / pada akhirnya",
+    "type": "ADVERB",
+    "example": "He eventually accepted the offer."
+  },
+  {
+    "word": "frequently",
+    "translation": "sering / kerap kali",
+    "type": "ADVERB",
+    "example": "She frequently visits her parents."
+  },
+  {
+    "word": "generally",
+    "translation": "umumnya / secara umum",
+    "type": "ADVERB",
+    "example": "Generally, people prefer warm weather."
+  },
+  {
+    "word": "immediately",
+    "translation": "segera / langsung",
+    "type": "ADVERB",
+    "example": "Please call me immediately."
+  },
+  {
+    "word": "initially",
+    "translation": "awalnya / pada mulanya",
+    "type": "ADVERB",
+    "example": "I was initially nervous."
+  },
+  {
+    "word": "likely",
+    "translation": "kemungkinan besar / mungkin",
+    "type": "ADVERB",
+    "example": "She is likely to succeed."
+  },
+  {
+    "word": "mostly",
+    "translation": "sebagian besar / kebanyakan",
+    "type": "ADVERB",
+    "example": "The team is mostly from Jakarta."
+  },
+  {
+    "word": "nearly",
+    "translation": "hampir / nyaris",
+    "type": "ADVERB",
+    "example": "I nearly missed the bus."
+  },
+  {
+    "word": "often",
+    "translation": "sering / kerap",
+    "type": "ADVERB",
+    "example": "He often works late."
+  },
+  {
+    "word": "particularly",
+    "translation": "khususnya / terutama",
+    "type": "ADVERB",
+    "example": "I am particularly interested in AI."
+  },
+  {
+    "word": "previously",
+    "translation": "sebelumnya / dahulu",
+    "type": "ADVERB",
+    "example": "She previously worked at a bank."
+  },
+  {
+    "word": "quickly",
+    "translation": "dengan cepat / segera",
+    "type": "ADVERB",
+    "example": "She quickly solved the problem."
+  },
+  {
+    "word": "recently",
+    "translation": "baru-baru ini / belakangan",
+    "type": "ADVERB",
+    "example": "I recently started a new job."
+  },
+  {
+    "word": "regularly",
+    "translation": "secara teratur / rutin",
+    "type": "ADVERB",
+    "example": "Exercise regularly for good health."
+  },
+  {
+    "word": "significantly",
+    "translation": "secara signifikan / jauh",
+    "type": "ADVERB",
+    "example": "Performance improved significantly."
+  },
+  {
+    "word": "specifically",
+    "translation": "secara khusus / tepatnya",
+    "type": "ADVERB",
+    "example": "I specifically asked for no sugar."
+  },
+  {
+    "word": "successfully",
+    "translation": "dengan sukses / berhasil",
+    "type": "ADVERB",
+    "example": "She successfully completed the marathon."
+  },
+  {
+    "word": "truly",
+    "translation": "sungguh / benar-benar",
+    "type": "ADVERB",
+    "example": "I am truly grateful."
+  },
+  {
+    "word": "typically",
+    "translation": "biasanya / umumnya",
+    "type": "ADVERB",
+    "example": "Meetings typically last one hour."
+  },
+  {
+    "word": "usually",
+    "translation": "biasanya / umumnya",
+    "type": "ADVERB",
+    "example": "I usually wake up at 6 AM."
+  },
+  {
+    "word": "as a result",
+    "translation": "sebagai hasilnya / akibatnya",
+    "type": "PHRASE",
+    "example": "As a result, the project was delayed."
+  },
+  {
+    "word": "at first glance",
+    "translation": "pada pandangan pertama",
+    "type": "PHRASE",
+    "example": "At first glance, the plan looked simple."
+  },
+  {
+    "word": "by the way",
+    "translation": "ngomong-ngomong / omong-omong",
+    "type": "PHRASE",
+    "example": "By the way, have you met John?"
+  },
+  {
+    "word": "cut to the chase",
+    "translation": "langsung ke inti permasalahan",
+    "type": "PHRASE",
+    "example": "Let's cut to the chase."
+  },
+  {
+    "word": "for example",
+    "translation": "misalnya / contohnya",
+    "type": "PHRASE",
+    "example": "For example, you can use Python or Java."
+  },
+  {
+    "word": "in addition",
+    "translation": "selain itu / tambahan pula",
+    "type": "PHRASE",
+    "example": "In addition, we need to reduce costs."
+  },
+  {
+    "word": "in conclusion",
+    "translation": "kesimpulannya / singkatnya",
+    "type": "PHRASE",
+    "example": "In conclusion, the project was a success."
+  },
+  {
+    "word": "in other words",
+    "translation": "dengan kata lain",
+    "type": "PHRASE",
+    "example": "In other words, we need more time."
+  },
+  {
+    "word": "keep in mind",
+    "translation": "perlu diingat / ingat baik-baik",
+    "type": "PHRASE",
+    "example": "Keep in mind that the deadline is tomorrow."
+  },
+  {
+    "word": "look forward to",
+    "translation": "tidak sabar menantikan",
+    "type": "PHRASE",
+    "example": "I look forward to meeting you."
+  },
+  {
+    "word": "make sense",
+    "translation": "masuk akal / bisa dimengerti",
+    "type": "PHRASE",
+    "example": "Does this make sense to you?"
+  },
+  {
+    "word": "on the other hand",
+    "translation": "di sisi lain / sebaliknya",
+    "type": "PHRASE",
+    "example": "On the other hand, we must be careful."
+  },
+  {
+    "word": "once in a while",
+    "translation": "sesekali / kadang-kadang",
+    "type": "PHRASE",
+    "example": "We go out for dinner once in a while."
+  },
+  {
+    "word": "take advantage of",
+    "translation": "memanfaatkan / mengambil keuntungan dari",
+    "type": "PHRASE",
+    "example": "Take advantage of every opportunity."
+  },
+  {
+    "word": "take it easy",
+    "translation": "santai / jangan terlalu serius",
+    "type": "PHRASE",
+    "example": "Take it easy, you did your best."
+  },
+  {
+    "word": "to be honest",
+    "translation": "jujur saja / terus terang",
+    "type": "PHRASE",
+    "example": "To be honest, I was surprised."
+  },
+  {
+    "word": "under pressure",
+    "translation": "dalam tekanan / terdesak",
+    "type": "PHRASE",
+    "example": "She works well under pressure."
+  },
+  {
+    "word": "up to date",
+    "translation": "terkini / mutakhir",
+    "type": "PHRASE",
+    "example": "Keep your software up to date."
+  },
+  {
+    "word": "worth it",
+    "translation": "sepadan / berharga",
+    "type": "PHRASE",
+    "example": "All the effort was worth it."
+  }
+]
