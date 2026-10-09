@@ -50,7 +50,7 @@ export function QuickActionsGrid() {
       ))}
 
       {/* The 4th persistent "More" button */}
-      <TouchableScale style={styles.actionItem} scaleTo={0.92} onPress={() => router.push('/modules')}>
+      <TouchableScale style={styles.actionItem} scaleTo={0.92} onPress={() => router.push('/modules' as any)}>
         <View style={[styles.actionIconBg, { backgroundColor: 'rgba(250, 250, 250, 0.1)' }]}>
           <Ionicons name="grid" size={28} color={Colors.text.primary} />
         </View>

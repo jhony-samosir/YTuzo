@@ -90,7 +90,7 @@ export default function EnglishDashboardScreen() {
             iconName="book"
             iconColor={Colors.brand.yuzu}
             iconBgColor="rgba(250, 204, 21, 0.15)"
-            onPress={() => router.push('/english/dictionary')}
+            onPress={() => router.push('/english/dictionary' as any)}
           />
           <ModuleCard
             title="Flashcards"

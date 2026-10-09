@@ -103,7 +103,6 @@ export const ScheduledTab: React.FC<ScheduledTabProps> = ({ subscriptions, onAdd
             </View>
           </View>
         </View>
-        </View>
       </Animated.View>
     );
   };
