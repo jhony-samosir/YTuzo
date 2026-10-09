@@ -7,6 +7,7 @@ import { useSQLiteContext } from 'expo-sqlite';
 
 import { Colors } from '../../constants/Colors';
 import { TouchableScale } from '../../components/ui/TouchableScale';
+import { useSyncEngine } from '../../hooks/useSyncEngine';
 
 // Custom Neon Switch Component built just for YTuzo
 function NeonSwitch({ value, onValueChange }: { value: boolean, onValueChange: (v: boolean) => void }) {
@@ -104,6 +105,7 @@ function SettingGroup({ title, children }: any) {
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
   const db = useSQLiteContext();
+  const { syncData, isSyncing } = useSyncEngine();
   
   // States
   const [profile, setProfile] = useState<any>(null);
@@ -183,6 +185,15 @@ export default function SettingsScreen() {
             <SettingItem icon="shield-checkmark" title="Face ID / Biometrics" type="toggle" value={faceId} onToggle={(v: boolean) => togglePref('is_biometric_enabled', v, setFaceId)} />
             <SettingItem icon="key" title="Change Passcode" />
             <SettingItem icon="lock-closed" title="Two-Factor Authentication" value="Enabled" />
+          </SettingGroup>
+
+          <SettingGroup title="Cloud & Sync">
+            <SettingItem 
+              icon={isSyncing ? "sync" : "cloud-upload"} 
+              title="Sync to Postgres Cloud" 
+              value={isSyncing ? "Syncing..." : "Sync Now"} 
+              onPress={syncData} 
+            />
           </SettingGroup>
 
           <SettingGroup title="Preferences">
