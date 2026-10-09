@@ -62,29 +62,69 @@ export async function POST(request: Request) {
         if (hasProgress) {
           for (const log of vocab_progress_logs) {
             await client.query(`
-              INSERT INTO user_vocab_progress (id, user_id, word_id, status, last_read_at, created_at, updated_at, sync_status)
-              VALUES ($1, $2, $3, $4, $5, $6, $7, 1)
+              INSERT INTO user_vocab_progress (id, user_id, word_id, status, is_favorite, last_read_at, created_at, updated_at, sync_status)
+              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 1)
               ON CONFLICT (id) DO UPDATE SET
                 status = EXCLUDED.status,
+                is_favorite = EXCLUDED.is_favorite,
                 last_read_at = EXCLUDED.last_read_at,
                 updated_at = EXCLUDED.updated_at,
                 sync_status = 1;
             `, [
-              log.id, log.user_id, log.word_id, log.status, log.last_read_at, log.created_at, log.updated_at
+              log.id, log.user_id, log.word_id, log.status, log.is_favorite || 0, log.last_read_at, log.created_at, log.updated_at
             ]);
           }
         }
         
+        
         await client.query('COMMIT');
+        
+        // 2. PULL: Ambil data dari server yang diubah setelah last_sync_timestamp
+        const syncDate = body.last_sync_timestamp || '1970-01-01T00:00:00Z';
+        
+        const pulledFinance = await client.query('SELECT * FROM finance_logs WHERE updated_at > $1', [syncDate]);
+        const pulledDict = await client.query('SELECT * FROM master_dictionary WHERE updated_at > $1', [syncDate]);
+        const pulledProgress = await client.query('SELECT * FROM user_vocab_progress WHERE updated_at > $1', [syncDate]);
+        
+        return Response.json({ 
+          success: true, 
+          message: 'Sync 2-Arah berhasil!',
+          data: {
+            finance_logs: pulledFinance.rows,
+            dictionary_logs: pulledDict.rows,
+            vocab_progress_logs: pulledProgress.rows
+          }
+        });
+
       } catch (e) {
         await client.query('ROLLBACK');
         throw e;
       } finally {
         client.release();
       }
+    } else {
+      // Jika tidak ada data Push, kita tetap lakukan Pull
+      const client = await db.getClient();
+      try {
+        const syncDate = body.last_sync_timestamp || '1970-01-01T00:00:00Z';
+        
+        const pulledFinance = await client.query('SELECT * FROM finance_logs WHERE updated_at > $1', [syncDate]);
+        const pulledDict = await client.query('SELECT * FROM master_dictionary WHERE updated_at > $1', [syncDate]);
+        const pulledProgress = await client.query('SELECT * FROM user_vocab_progress WHERE updated_at > $1', [syncDate]);
+        
+        return Response.json({ 
+          success: true, 
+          message: 'Pull berhasil!',
+          data: {
+            finance_logs: pulledFinance.rows,
+            dictionary_logs: pulledDict.rows,
+            vocab_progress_logs: pulledProgress.rows
+          }
+        });
+      } finally {
+        client.release();
+      }
     }
-
-    return Response.json({ success: true, message: 'Sync berhasil!' });
   } catch (error: any) {
     console.error('Sync API error:', error);
     return Response.json({ success: false, error: error.message }, { status: 500 });

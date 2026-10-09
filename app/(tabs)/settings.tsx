@@ -105,7 +105,7 @@ function SettingGroup({ title, children }: any) {
 export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
   const db = useSQLiteContext();
-  const { syncData, isSyncing } = useSyncEngine();
+  const { pushToCloud, pullFromCloud, isSyncing } = useSyncEngine();
   
   // States
   const [profile, setProfile] = useState<any>(null);
@@ -190,9 +190,15 @@ export default function SettingsScreen() {
           <SettingGroup title="Cloud & Sync">
             <SettingItem 
               icon={isSyncing ? "sync" : "cloud-upload"} 
-              title="Sync to Postgres Cloud" 
-              value={isSyncing ? "Syncing..." : "Sync Now"} 
-              onPress={syncData} 
+              title="Sync to Cloud (Push)" 
+              value={isSyncing ? "Pushing..." : "Push Now"} 
+              onPress={pushToCloud} 
+            />
+            <SettingItem 
+              icon={isSyncing ? "sync" : "cloud-download"} 
+              title="Sync from Cloud (Pull)" 
+              value={isSyncing ? "Pulling..." : "Pull Now"} 
+              onPress={pullFromCloud} 
             />
           </SettingGroup>
 
