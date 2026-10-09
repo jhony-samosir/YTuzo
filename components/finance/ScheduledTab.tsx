@@ -54,7 +54,7 @@ export const ScheduledTab: React.FC<ScheduledTabProps> = ({ subscriptions, onAdd
     
     // Check if due soon (<= 3 days)
     const msPerDay = 24 * 60 * 60 * 1000;
-    const diffDays = currentTimestamp ? ((s.next_billing_date - currentTimestamp) / msPerDay) : -1;
+    const diffDays = currentTimestamp ? ((date.getTime() - currentTimestamp) / msPerDay) : -1;
     const isDueSoon = !s.is_paused && diffDays >= 0 && diffDays <= 3;
 
     return (

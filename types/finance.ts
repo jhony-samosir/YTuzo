@@ -30,7 +30,7 @@ export interface Subscription {
   amount: number;
   type: 'INCOME' | 'EXPENSE';
   billing_cycle: 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
-  next_billing_date: number; // timestamp
+  next_billing_date: string; // ISO string
   icon: string;
   color: string;
   wallet_id?: string;
@@ -45,8 +45,8 @@ export interface Transaction {
   type: 'INCOME' | 'EXPENSE';
   icon: string;
   color: string;
-  created_at: number;  // Unix timestamp in milliseconds
-  updated_at?: number; // Unix timestamp in milliseconds
+  created_at: string;  // ISO string
+  updated_at?: string; // ISO string
   sync_status?: number; // 0 = pending sync, 1 = synced
   wallet_id?: string;
   category_id?: string;

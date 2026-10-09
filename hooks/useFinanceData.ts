@@ -150,9 +150,9 @@ export function useFinanceData() {
     }
   }, [db, transactions, loadWallets, loadTransactions, loadStaticData]);
 
-  const addTransaction = useCallback(async (tx: Omit<Transaction, 'id' | 'created_at'> & { created_at?: number }) => {
+  const addTransaction = useCallback(async (tx: Omit<Transaction, 'id' | 'created_at'> & { created_at?: string }) => {
     try {
-      const txTime = tx.created_at || Date.now();
+      const txTime = tx.created_at || new Date().toISOString();
       const id = 'fin-' + Crypto.randomUUID();
       const walletId = tx.wallet_id || DEFAULT_WALLET_ID;
       
@@ -160,7 +160,7 @@ export function useFinanceData() {
         ...tx,
         id,
         created_at: txTime,
-        updated_at: Date.now(),
+        updated_at: new Date().toISOString(),
         sync_status: 0,
         icon: tx.icon || 'cash',
         color: tx.color || '#10B981',
@@ -177,7 +177,7 @@ export function useFinanceData() {
       await db.withExclusiveTransactionAsync(async (txn) => {
         await txn.runAsync(
           'INSERT INTO finance_logs (id, title, subtitle, amount, type, icon, color, created_at, updated_at, sync_status, wallet_id, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)',
-          [id, tx.title, tx.subtitle, tx.amount, tx.type, newTx.icon, newTx.color, txTime, Date.now(), walletId, newTx.category_id || DEFAULT_CATEGORY_ID]
+          [id, tx.title, tx.subtitle, tx.amount, tx.type, newTx.icon, newTx.color, txTime, new Date().toISOString(), walletId, newTx.category_id || DEFAULT_CATEGORY_ID]
         );
         await txn.runAsync('UPDATE wallets SET balance = balance + ? WHERE id = ?', [balanceModifier, walletId]);
       });
@@ -195,7 +195,7 @@ export function useFinanceData() {
       const oldTx = transactions.find(t => t.id === id);
       if (!oldTx) return;
 
-      const now = Date.now();
+      const now = new Date().toISOString();
       const txTime = tx.created_at ?? oldTx.created_at;
       
       const newType = tx.type || oldTx.type;
@@ -207,7 +207,7 @@ export function useFinanceData() {
       const applyModifier = newType === 'INCOME' ? newAmount : -newAmount;
 
       // 1. Optimistic Update
-      setTransactions(prev => prev.map(t => t.id === id ? { ...t, ...tx, updated_at: now, created_at: txTime as number } : t));
+      setTransactions(prev => prev.map(t => t.id === id ? { ...t, ...tx, updated_at: now, created_at: txTime as string } : t));
       
       setWallets(prev => prev.map(w => {
         let newBalance = w.balance;
@@ -252,7 +252,7 @@ export function useFinanceData() {
       const id = 'sub-' + Crypto.randomUUID();
       const newSub = { ...sub, id } as Subscription;
       
-      setSubscriptions(prev => [...prev, newSub].sort((a, b) => a.next_billing_date - b.next_billing_date));
+      setSubscriptions(prev => [...prev, newSub].sort((a, b) => new Date(a.next_billing_date).getTime() - new Date(b.next_billing_date).getTime()));
       
       await db.runAsync(
         'INSERT INTO subscriptions (id, name, amount, type, billing_cycle, next_billing_date, icon, color, wallet_id, is_paused) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
@@ -266,7 +266,7 @@ export function useFinanceData() {
 
   const updateSubscription = useCallback(async (id: string, sub: Partial<Subscription>) => {
     try {
-      setSubscriptions(prev => prev.map(s => s.id === id ? { ...s, ...sub } : s).sort((a, b) => a.next_billing_date - b.next_billing_date));
+      setSubscriptions(prev => prev.map(s => s.id === id ? { ...s, ...sub } : s).sort((a, b) => new Date(a.next_billing_date).getTime() - new Date(b.next_billing_date).getTime()));
       
       await db.runAsync(
         'UPDATE subscriptions SET name = COALESCE(?, name), amount = COALESCE(?, amount), type = COALESCE(?, type), billing_cycle = COALESCE(?, billing_cycle), next_billing_date = COALESCE(?, next_billing_date), icon = COALESCE(?, icon), color = COALESCE(?, color), wallet_id = COALESCE(?, wallet_id), is_paused = COALESCE(?, is_paused) WHERE id = ?',

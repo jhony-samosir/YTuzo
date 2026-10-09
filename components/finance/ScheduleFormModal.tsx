@@ -47,7 +47,7 @@ export const ScheduleFormModal: React.FC<ScheduleFormModalProps> = ({ visible, o
       amount: parsedAmount,
       type: type,
       billing_cycle: billingCycle,
-      next_billing_date: selectedDate.getTime(),
+      next_billing_date: selectedDate.toISOString(),
       icon: initialData?.icon || (type === 'INCOME' ? 'briefcase' : 'calendar'),
       color: initialData?.color || (type === 'INCOME' ? '#10B981' : '#F43F5E'),
       wallet_id: selectedWalletId,

@@ -49,7 +49,7 @@ export const TransactionModal: React.FC<TransactionModalProps> = ({ visible, onC
       color: category ? category.color : (type === 'INCOME' ? '#10B981' : '#F43F5E'),
       wallet_id: selectedWalletId,
       category_id: selectedCategoryId,
-      created_at: selectedDate.getTime()
+      created_at: selectedDate.toISOString()
     });
     onClose();
   };
