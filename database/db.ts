@@ -15,23 +15,11 @@ export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
   await db.execAsync(`PRAGMA foreign_keys = ON;`);
 
   if (currentDbVersion < 1) {
-    // v1: Enterprise Migration — initial schema
+    // v1: Enterprise Migration — initial schema (Non-destructive)
     await db.execAsync(`
       DROP VIEW IF EXISTS daily_activities;
-      DROP TABLE IF EXISTS finance_logs;
-      DROP TABLE IF EXISTS sport_logs;
-      DROP TABLE IF EXISTS fuel_logs;
-      DROP TABLE IF EXISTS user_profile;
-      DROP TABLE IF EXISTS app_preferences;
-      DROP TABLE IF EXISTS quick_actions_config;
-      DROP TABLE IF EXISTS budgets;
-      DROP TABLE IF EXISTS master_dictionary;
-      DROP TABLE IF EXISTS subscriptions;
-      DROP TABLE IF EXISTS user_vocab_progress;
-      DROP TABLE IF EXISTS categories;
-      DROP TABLE IF EXISTS wallets;
 
-      CREATE TABLE wallets (
+      CREATE TABLE IF NOT EXISTS wallets (
         id TEXT PRIMARY KEY NOT NULL,
         user_id TEXT NOT NULL,
         name TEXT NOT NULL,
@@ -40,7 +28,7 @@ export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
         color_theme TEXT NOT NULL
       );
 
-      CREATE TABLE categories (
+      CREATE TABLE IF NOT EXISTS categories (
         id TEXT PRIMARY KEY NOT NULL,
         user_id TEXT NOT NULL,
         name TEXT NOT NULL,
@@ -50,7 +38,7 @@ export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
         FOREIGN KEY (parent_id) REFERENCES categories (id) ON DELETE CASCADE
       );
 
-      CREATE TABLE finance_logs (
+      CREATE TABLE IF NOT EXISTS finance_logs (
         id TEXT PRIMARY KEY NOT NULL,
         user_id TEXT NOT NULL,
         title TEXT NOT NULL,
@@ -69,7 +57,7 @@ export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
       );
       CREATE INDEX IF NOT EXISTS idx_finance_user_date ON finance_logs(user_id, created_at);
 
-      CREATE TABLE sport_logs (
+      CREATE TABLE IF NOT EXISTS sport_logs (
         id TEXT PRIMARY KEY NOT NULL,
         user_id TEXT NOT NULL,
         sport_type TEXT NOT NULL,
@@ -82,7 +70,7 @@ export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
       );
       CREATE INDEX IF NOT EXISTS idx_sport_user_date ON sport_logs(user_id, created_at);
 
-      CREATE TABLE fuel_logs (
+      CREATE TABLE IF NOT EXISTS fuel_logs (
         id TEXT PRIMARY KEY NOT NULL,
         user_id TEXT NOT NULL,
         odometer INTEGER NOT NULL,
@@ -103,7 +91,7 @@ export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
         UNION ALL
         SELECT id, user_id, 'FUEL' as module_type, location as primary_text, liters || ' L • Odo: ' || odometer as secondary_text, total_cost as main_value, 'EXPENSE' as sub_value, 'water' as icon, '#F43F5E' as color, created_at, sync_status FROM fuel_logs;
 
-      CREATE TABLE user_profile (
+      CREATE TABLE IF NOT EXISTS user_profile (
         id TEXT PRIMARY KEY NOT NULL,
         user_id TEXT NOT NULL,
         first_name TEXT NOT NULL,
@@ -114,7 +102,7 @@ export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
         sync_status INTEGER DEFAULT 0
       );
 
-      CREATE TABLE app_preferences (
+      CREATE TABLE IF NOT EXISTS app_preferences (
         id TEXT PRIMARY KEY NOT NULL,
         user_id TEXT NOT NULL,
         is_biometric_enabled INTEGER NOT NULL,
@@ -124,7 +112,7 @@ export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
         sync_status INTEGER DEFAULT 0
       );
 
-      CREATE TABLE quick_actions_config (
+      CREATE TABLE IF NOT EXISTS quick_actions_config (
         id TEXT PRIMARY KEY NOT NULL,
         user_id TEXT NOT NULL,
         action_id TEXT NOT NULL,
@@ -135,7 +123,7 @@ export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
         label_text TEXT NOT NULL
       );
 
-      CREATE TABLE budgets (
+      CREATE TABLE IF NOT EXISTS budgets (
         id TEXT PRIMARY KEY NOT NULL,
         user_id TEXT NOT NULL,
         category_id TEXT NOT NULL,
@@ -143,7 +131,7 @@ export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
         FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE CASCADE
       );
 
-      CREATE TABLE subscriptions (
+      CREATE TABLE IF NOT EXISTS subscriptions (
         id TEXT PRIMARY KEY NOT NULL,
         user_id TEXT NOT NULL,
         name TEXT NOT NULL,
@@ -158,7 +146,7 @@ export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
         FOREIGN KEY (wallet_id) REFERENCES wallets (id) ON DELETE CASCADE
       );
 
-      CREATE TABLE master_dictionary (
+      CREATE TABLE IF NOT EXISTS master_dictionary (
         id TEXT PRIMARY KEY NOT NULL,
         base_word TEXT NOT NULL,
         translation TEXT NOT NULL,
@@ -174,7 +162,7 @@ export async function migrateDbIfNeeded(db: SQLite.SQLiteDatabase) {
       CREATE INDEX IF NOT EXISTS idx_dict_word ON master_dictionary(base_word);
       CREATE INDEX IF NOT EXISTS idx_dict_type ON master_dictionary(word_type);
 
-      CREATE TABLE user_vocab_progress (
+      CREATE TABLE IF NOT EXISTS user_vocab_progress (
         id TEXT PRIMARY KEY NOT NULL,
         user_id TEXT NOT NULL,
         word_id TEXT NOT NULL,

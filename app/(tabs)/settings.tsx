@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, ScrollView, Animated, Pressable, Platform } from 'react-native';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSQLiteContext } from 'expo-sqlite';
+import { useEffect, useState } from 'react';
+import { Alert, Animated, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Colors } from '../../constants/Colors';
 import { TouchableScale } from '../../components/ui/TouchableScale';
+import { Colors } from '../../constants/Colors';
 import { useSyncEngine } from '../../hooks/useSyncEngine';
+import { exportBackupToFile, importBackupFromFile } from '../../utils/backup';
 
 // Custom Neon Switch Component built just for YTuzo
 function NeonSwitch({ value, onValueChange }: { value: boolean, onValueChange: (v: boolean) => void }) {
@@ -74,14 +76,14 @@ function SettingItem({ icon, title, value, type = 'link', onPress, onToggle }: a
           </View>
           <Text style={styles.settingTitle}>{title}</Text>
         </View>
-        
+
         {type === 'link' && (
           <View style={styles.settingItemRight}>
             {value && <Text style={styles.settingValue}>{value}</Text>}
             <Ionicons name="chevron-forward" size={20} color={Colors.text.muted} />
           </View>
         )}
-        
+
         {type === 'toggle' && (
           <NeonSwitch value={value} onValueChange={onToggle} />
         )}
@@ -106,18 +108,20 @@ export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
   const db = useSQLiteContext();
   const { pushToCloud, pullFromCloud, isSyncing } = useSyncEngine();
-  
+
   // States
   const [profile, setProfile] = useState<any>(null);
   const [faceId, setFaceId] = useState(true);
   const [pushNotif, setPushNotif] = useState(true);
   const [darkTheme, setDarkTheme] = useState(true);
+  const [isExporting, setIsExporting] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
 
   useEffect(() => {
     async function loadSettings() {
       const user = await db.getFirstAsync('SELECT * FROM user_profile LIMIT 1');
       setProfile(user);
-      
+
       const prefs = await db.getFirstAsync<any>('SELECT * FROM app_preferences LIMIT 1');
       if (prefs) {
         setFaceId(Boolean(prefs.is_biometric_enabled));
@@ -131,6 +135,59 @@ export default function SettingsScreen() {
   const togglePref = async (column: string, value: boolean, setter: any) => {
     setter(value);
     await db.runAsync(`UPDATE app_preferences SET ${column} = ?`, [value ? 1 : 0]);
+  };
+
+  const handleExportBackup = async () => {
+    if (isExporting) return;
+    setIsExporting(true);
+    try {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => { });
+      const result = await exportBackupToFile(db);
+      if (result.success) {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => { });
+        Alert.alert(
+          'Cadangan Berhasil',
+          `Data berhasil diekspor!\n\n• Transaksi: ${result.metadata?.counts.financeLogs}\n• Dompet: ${result.metadata?.counts.wallets}\n• Progres Belajar: ${result.metadata?.counts.vocabProgress}\n\nFile cadangan siap disimpan atau dibagikan.`
+        );
+      } else if (result.message !== 'Pemilihan file dibatalkan.') {
+        Alert.alert('Gagal Ekspor', result.message);
+      }
+    } catch (e: any) {
+      Alert.alert('Error', e?.message || 'Terjadi kesalahan saat mengekspor data.');
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const handleImportBackup = async () => {
+    if (isImporting) return;
+    Alert.alert(
+      'Pulihkan Data Cadangan',
+      'Apakah Anda yakin ingin memulihkan data dari file cadangan JSON? Data yang ada di perangkat akan diperbarui dengan data dari file cadangan.',
+      [
+        { text: 'Batal', style: 'cancel' },
+        {
+          text: 'Pilih File & Pulihkan',
+          onPress: async () => {
+            setIsImporting(true);
+            try {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => { });
+              const result = await importBackupFromFile(db);
+              if (result.success) {
+                Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => { });
+                Alert.alert('Pemulihan Sukses', result.message);
+              } else if (result.message !== 'Pemilihan file dibatalkan.') {
+                Alert.alert('Gagal Pulihkan', result.message);
+              }
+            } catch (e: any) {
+              Alert.alert('Error', e?.message || 'Terjadi kesalahan saat memulihkan data.');
+            } finally {
+              setIsImporting(false);
+            }
+          },
+        },
+      ]
+    );
   };
 
   return (
@@ -149,7 +206,7 @@ export default function SettingsScreen() {
           <Text style={styles.headerSubtitle}>System Preferences</Text>
         </View>
 
-        <ScrollView 
+        <ScrollView
           contentContainerStyle={[styles.scrollContent, { paddingBottom: insets.bottom + 120 }]}
           showsVerticalScrollIndicator={false}
         >
@@ -187,6 +244,21 @@ export default function SettingsScreen() {
             <SettingItem icon="lock-closed" title="Two-Factor Authentication" value="Enabled" />
           </SettingGroup>
 
+          <SettingGroup title="Data & Offline Backup">
+            <SettingItem
+              icon={isExporting ? "hourglass-outline" : "share-social-outline"}
+              title="Backup Data"
+              value={isExporting ? "Mengekspor..." : "Simpan JSON"}
+              onPress={handleExportBackup}
+            />
+            <SettingItem
+              icon={isImporting ? "hourglass-outline" : "download-outline"}
+              title="Restore Data"
+              value={isImporting ? "Memulihkan..." : "Pilih File"}
+              onPress={handleImportBackup}
+            />
+          </SettingGroup>
+
           <SettingGroup title="Cloud & Sync">
             <SettingItem 
               icon={isSyncing ? "sync" : "cloud-upload"} 
@@ -218,7 +290,7 @@ export default function SettingsScreen() {
             <Text style={styles.logoutText}>TERMINATE SESSION</Text>
             <Ionicons name="log-out-outline" size={20} color={Colors.brand.ruby} />
           </TouchableScale>
-          
+
         </ScrollView>
       </SafeAreaView>
     </View>
